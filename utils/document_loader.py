@@ -1,3 +1,5 @@
+""" Import Resources Module """
+
 import os
 import sys
 import openai

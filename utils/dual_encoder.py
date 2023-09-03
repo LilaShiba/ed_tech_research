@@ -1,12 +1,16 @@
 """
 Dual Encoder Module
+Creates Vector Embeddings
 
 """
-from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from langchain.vectorstores import Chroma
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import TokenTextSplitter
 import sys
+
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.embeddings.sentence_transformer import \
+    SentenceTransformerEmbeddings
+from langchain.text_splitter import TokenTextSplitter
+from langchain.vectorstores import Chroma
+
 sys.path.append('../..')
 
 
@@ -29,8 +33,7 @@ class Encoder:
         self.vectordb = course_instance.vectordb
         self.k_results = course_instance.k_results
         self.embedding_function = course_instance.embedding_function
-
-    # ... Other methods ...
+        self.embedding_check = False
 
     def create_chunks(self, docs, chunk=20, overlap=5):
         """
@@ -77,6 +80,7 @@ class Encoder:
         print("chunks created")
         self.embed_chunks()
         print("embedding created")
+        self.embedding_check = True
 
     def subprocess_persist(self, path, model="facebook-dpr-ctx_encoder-multiset-base"):
         """
@@ -112,12 +116,13 @@ class Encoder:
         self.docs
 
         Returns:
-        k answers
+        k docs
+        doc len
 
         """
-        res = self.vectordb.similarity_search_with_score(
+        docs = self.vectordb.similarity_search_with_score(
             query=query, distance_metric="cos", k=k_docs)
-        return res
+        return docs, len(docs)
 
     def from_db(self, path_to_db, model="facebook-dpr-ctx_encoder-multiset-base"):
         """
