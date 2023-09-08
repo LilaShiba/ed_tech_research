@@ -21,7 +21,7 @@ class ChatBot:
         self.current_question = None
         self.qa_chain = None
         self.retriever = None
-        self.chat_vectordb = None
+        self.vectordb = None
 
         self.model = "facebook-dpr-ctx_encoder-multiset-base"
 
@@ -73,6 +73,11 @@ class ChatBot:
 
         # Enter Chat Stream
 
+        qa_chain = RetrievalQA.from_chain_type(
+            self.llm, retriever=self.vectordb.as_retriever())
+
+        # print(f"{self.name}: {response['answer']}")
+
         exit_flag = False
         while not exit_flag:
             quest = input(
@@ -82,32 +87,13 @@ class ChatBot:
                 exit_flag = True
                 print("Goodbye!")
             else:
-                response = self.agent.encoder.db.similarity_search(quest)
-
-                # response = self.qa_chain({"query": quest})
-                print(f"{self.name}: {response[0].page_content}")
+                response = qa_chain({"query": quest})
+                print(f"{self.name}: {response}")
 
     def set_agent(self):
         """
         loads vector embeddings for Agent parent class
         """
-
-        # self.chat_vectordb = Chroma(persist_directory=self.agent.path,
-        #                             embedding_function=embedding_function)
-        # self.retriever = self.chat_vectordb.as_retriever()
-
-        # self.qa_chain = RetrievalQA.from_chain_type(llm=self.llm,
-        #                                             retriever=self.retriever)
-
-        persistent_client = chromadb.PersistentClient()
-        collection = persistent_client.get_or_create_collection(
-            "collection_name")
-        collection.add(ids=["1", "2", "3"], documents=["a", "b", "c"])
-
-        langchain_chroma = Chroma(
-            client=persistent_client,
-            collection_name="collection_name",
-            embedding_function=self.embedding_function,
-        )
-
-        print("There are", langchain_chroma._collection.count(), "in the collection")
+        self.vectordb = Chroma(
+            persist_directory="chroma_db/order-of-time", embedding_function=self.embedding_function)
+        self.retriever = self.vectordb.as_retriever()

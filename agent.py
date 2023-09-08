@@ -92,12 +92,12 @@ class Agent:
 
 if __name__ == "__main__":
     # Create Course Demo
-    testAgent = Agent(
-        "order-of-time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
-    testAgent.new_course()
-    testAgent.start_chat("What is this document about?")
+    # testAgent = Agent(
+    #     "order-of-time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
+    # testAgent.new_course()
+    # testAgent.start_chat("What is this document about?")
 
     # Load Course Embeddings Demo
-    # testAgent = Agent(
-    #     "Agent_Time", "docs/chroma/a65cd2ee-3115-4cd1-82ea-0e1592af494d", True)
-    # testAgent.load_course()
+    testAgent = Agent(
+        "Agent_Time", "chroma_db/order-of-time", True)
+    testAgent.load_course()
