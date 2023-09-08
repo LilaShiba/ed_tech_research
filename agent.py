@@ -12,7 +12,7 @@ class Agent:
        Encoder instance & NewCourse instance 
     """
 
-    def __init__(self, name: str, path: str):
+    def __init__(self, name: str, path: str, cot: bool):
         """
         Initializes the Agent with a name and path.
 
@@ -22,9 +22,10 @@ class Agent:
         """
         self.name = name
         self.path = path
+        self.cot = cot
         self.course = NewCourse(name, path)
         self.encoder = Encoder(self.course)
-        self.chat_bot = ChatBot(self, self.name)
+        self.chat_bot = ChatBot(self)
         self.path = path
         self.course.knowledge_document_path = path
         self.agent_instance = None
@@ -72,6 +73,7 @@ class Agent:
 
 if __name__ == "__main__":
 
-    testAgent = Agent("KBAI_2023", 'documents/kbai_2023.pdf')
+    testAgent = Agent(
+        "Agent_Time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
     testAgent.new_course()
-    testAgent.start_chat("What is this course about?")
+    testAgent.start_chat("What is this document about?")
