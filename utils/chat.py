@@ -3,6 +3,9 @@
 
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
+from langchain.vectorstores import Chroma
+from langchain.embeddings.sentence_transformer import \
+    SentenceTransformerEmbeddings
 
 
 class ChatBot:
@@ -36,6 +39,38 @@ class ChatBot:
             print(f"{self.name}: {response}")
 
             # print(f"{self.name}: {response['answer']}")
+
+        exit_flag = False
+        while not exit_flag:
+            quest = input(
+                f"Please ask a question about {self.name} or type 'exit' to end: ")
+
+            if quest.lower() == 'exit':
+                exit_flag = True
+                print("Goodbye!")
+            else:
+                response = qa_chain({"query": quest})
+                print(f"{self.name}: {response}")
+
+    def load_chat(self, path_to_db: str):
+        """
+        loads vector embeddings for Agent parent class
+        """
+        model = "facebook-dpr-ctx_encoder-multiset-base"
+
+        embedding_function = SentenceTransformerEmbeddings(
+            model_name=model)
+
+        print('loading agent...')
+
+        self.agent.encoder.vectordb = Chroma(persist_directory=path_to_db,
+                                             embedding_function=embedding_function)
+        print('agent loaded')
+
+        # Enter Chat Stream
+        llm = self.llm
+        qa_chain = RetrievalQA.from_chain_type(
+            llm, retriever=self.agent.encoder.vectordb.as_retriever())
 
         exit_flag = False
         while not exit_flag:

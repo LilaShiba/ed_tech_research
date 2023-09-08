@@ -108,7 +108,7 @@ class Encoder:
         self.vectordb = vectordb
         self.embedding_function = embedding_function
 
-    def encoded_query(self, qa, k_docs=15):
+    def encoded_query(self, q_a, k_docs=15):
         """
        Encodes query then searches
 
@@ -121,12 +121,12 @@ class Encoder:
 
         """
         if self.course_instance.cot:
-            cot_q = "step by step and one by one explain" + qa
+            cot_q = "step by step and one by one explain" + q_a
             docs = self.vectordb.similarity_search_with_score(
                 query=cot_q, distance_metric="cos", k=k_docs)
         else:
             docs = self.vectordb.similarity_search_with_score(
-                query=qa, distance_metric="cos", k=k_docs)
+                query=q_a, distance_metric="cos", k=k_docs)
         return docs, len(docs)
 
     def from_db(self, path_to_db, model="facebook-dpr-ctx_encoder-multiset-base"):
