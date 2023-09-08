@@ -8,12 +8,12 @@ from langchain.chat_models import ChatOpenAI
 class ChatBot:
     """ Chat with resources """
 
-    def __init__(self, agent_instance, temp=0.9):
+    def __init__(self, agent_instance):
         """ Chat with resources """
         self.agent = agent_instance
         self.name = agent_instance.name
         self.llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo", temperature=0.9)
+            model_name="gpt-3.5-turbo", temperature=0.5)
         self.current_question = None
 
     def question(self, quest):
@@ -28,7 +28,10 @@ class ChatBot:
         qa_chain = RetrievalQA.from_chain_type(
             llm, retriever=self.agent.encoder.vectordb.as_retriever())
 
-        if quest:
+        if quest and self.agent.cot:
+            response = qa_chain({"query": quest})
+            print(f"{self.name}: {response}")
+        else:
             response = qa_chain({"query": quest})
             print(f"{self.name}: {response}")
 

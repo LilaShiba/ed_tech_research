@@ -35,7 +35,7 @@ class Encoder:
         self.embedding_function = course_instance.embedding_function
         self.embedding_check = False
 
-    def create_chunks(self, docs, chunk=20, overlap=5):
+    def create_chunks(self, docs, chunk=200, overlap=15):
         """
         Creates new chunks from documents
         """
@@ -108,7 +108,7 @@ class Encoder:
         self.vectordb = vectordb
         self.embedding_function = embedding_function
 
-    def encoded_query(self, query, k_docs=5):
+    def encoded_query(self, qa, k_docs=15):
         """
        Encodes query then searches
 
@@ -120,8 +120,13 @@ class Encoder:
         doc len
 
         """
-        docs = self.vectordb.similarity_search_with_score(
-            query=query, distance_metric="cos", k=k_docs)
+        if self.course_instance.cot:
+            cot_q = "step by step and one by one explain" + qa
+            docs = self.vectordb.similarity_search_with_score(
+                query=cot_q, distance_metric="cos", k=k_docs)
+        else:
+            docs = self.vectordb.similarity_search_with_score(
+                query=qa, distance_metric="cos", k=k_docs)
         return docs, len(docs)
 
     def from_db(self, path_to_db, model="facebook-dpr-ctx_encoder-multiset-base"):
