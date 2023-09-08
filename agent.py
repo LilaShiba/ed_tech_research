@@ -2,9 +2,10 @@
 Top Lvl Agent Module
 
 """
+
+from utils.chat import ChatBot
 from utils.document_loader import NewCourse
 from utils.dual_encoder import Encoder
-from utils.chat import ChatBot
 
 
 class Agent:
@@ -23,8 +24,11 @@ class Agent:
         self.name = name
         self.path = path
         self.cot = cot
+        print('creating course')
         self.course = NewCourse(name, path)
+        print('creating encoder')
         self.encoder = Encoder(self.course)
+        print('creating chat_bot')
         self.chat_bot = ChatBot(self)
         self.path = path
         self.course.knowledge_document_path = path
@@ -70,12 +74,14 @@ class Agent:
         self.encoder.subprocess_persist(self.course.knowledge_document_path)
         print(f'instance saved at docs/chroma/{self.name}')
 
-    def load_course(self, db_path: str):
+    def load_course(self):
         """
         load vector embeddings from Chroma
 
         """
-        self.chat_bot.load_chat(db_path)
+        print("waking up agent")
+        self.chat_bot.set_agent()
+        self.chat_bot.load_chat()
 
     def load_mem(self):
         """
@@ -86,13 +92,12 @@ class Agent:
 
 if __name__ == "__main__":
     # Create Course Demo
-    # testAgent = Agent(
-    #     "Agent_Time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
-    # testAgent.new_course()
-    # testAgent.start_chat("What is this document about?")
+    testAgent = Agent(
+        "order-of-time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
+    testAgent.new_course()
+    testAgent.start_chat("What is this document about?")
 
     # Load Course Embeddings Demo
-    EMBEDDING_PATH = 'docs/chroma/a65cd2ee-3115-4cd1-82ea-0e1592af494d'
-    testAgent = Agent(
-        "Agent_Time", None, True)
-    testAgent.load_course(EMBEDDING_PATH)
+    # testAgent = Agent(
+    #     "Agent_Time", "docs/chroma/a65cd2ee-3115-4cd1-82ea-0e1592af494d", True)
+    # testAgent.load_course()

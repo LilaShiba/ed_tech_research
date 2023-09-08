@@ -1,11 +1,14 @@
 """ Start Chat with resources """
-
-
-from langchain.chains import RetrievalQA
-from langchain.chat_models import ChatOpenAI
-from langchain.vectorstores import Chroma
+import os
 from langchain.embeddings.sentence_transformer import \
     SentenceTransformerEmbeddings
+from langchain.vectorstores import Chroma
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA
+import chromadb
+
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
 class ChatBot:
@@ -14,10 +17,19 @@ class ChatBot:
     def __init__(self, agent_instance):
         """ Chat with resources """
         self.agent = agent_instance
-        self.name = agent_instance.name
+        self.name = 'test'
+        self.current_question = None
+        self.qa_chain = None
+        self.retriever = None
+        self.chat_vectordb = None
+
+        self.model = "facebook-dpr-ctx_encoder-multiset-base"
+
+        self.embedding_function = SentenceTransformerEmbeddings(
+            model_name=self.model)
+
         self.llm = ChatOpenAI(
             model_name="gpt-3.5-turbo", temperature=0.5)
-        self.current_question = None
 
     def question(self, quest):
         """ Chat with resources """
@@ -52,25 +64,14 @@ class ChatBot:
                 response = qa_chain({"query": quest})
                 print(f"{self.name}: {response}")
 
-    def load_chat(self, path_to_db: str):
+    def load_chat(self):
         """
-        loads vector embeddings for Agent parent class
+        Chat with default agent settings
         """
-        model = "facebook-dpr-ctx_encoder-multiset-base"
 
-        embedding_function = SentenceTransformerEmbeddings(
-            model_name=model)
-
-        print('loading agent...')
-
-        self.agent.encoder.vectordb = Chroma(persist_directory=path_to_db,
-                                             embedding_function=embedding_function)
         print('agent loaded')
 
         # Enter Chat Stream
-        llm = self.llm
-        qa_chain = RetrievalQA.from_chain_type(
-            llm, retriever=self.agent.encoder.vectordb.as_retriever())
 
         exit_flag = False
         while not exit_flag:
@@ -81,5 +82,32 @@ class ChatBot:
                 exit_flag = True
                 print("Goodbye!")
             else:
-                response = qa_chain({"query": quest})
-                print(f"{self.name}: {response}")
+                response = self.agent.encoder.db.similarity_search(quest)
+
+                # response = self.qa_chain({"query": quest})
+                print(f"{self.name}: {response[0].page_content}")
+
+    def set_agent(self):
+        """
+        loads vector embeddings for Agent parent class
+        """
+
+        # self.chat_vectordb = Chroma(persist_directory=self.agent.path,
+        #                             embedding_function=embedding_function)
+        # self.retriever = self.chat_vectordb.as_retriever()
+
+        # self.qa_chain = RetrievalQA.from_chain_type(llm=self.llm,
+        #                                             retriever=self.retriever)
+
+        persistent_client = chromadb.PersistentClient()
+        collection = persistent_client.get_or_create_collection(
+            "collection_name")
+        collection.add(ids=["1", "2", "3"], documents=["a", "b", "c"])
+
+        langchain_chroma = Chroma(
+            client=persistent_client,
+            collection_name="collection_name",
+            embedding_function=self.embedding_function,
+        )
+
+        print("There are", langchain_chroma._collection.count(), "in the collection")
