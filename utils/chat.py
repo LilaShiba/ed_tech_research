@@ -5,7 +5,7 @@ from langchain.embeddings.sentence_transformer import \
 from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
-import chromadb
+import pprint
 
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -22,6 +22,7 @@ class ChatBot:
         self.qa_chain = None
         self.retriever = None
         self.vectordb = None
+        self.question = None
 
         self.model = "facebook-dpr-ctx_encoder-multiset-base"
 
@@ -30,11 +31,6 @@ class ChatBot:
 
         self.llm = ChatOpenAI(
             model_name="gpt-3.5-turbo", temperature=0.5)
-
-    def question(self, quest):
-        """ Chat with resources """
-
-        self.current_question = quest
 
     def enter_chat(self, quest=None):
         """ Start Chat with resources """
@@ -62,7 +58,7 @@ class ChatBot:
                 print("Goodbye!")
             else:
                 response = qa_chain({"query": quest})
-                print(f"{self.name}: {response}")
+                print.pprint(f"{self.name}: {response}")
 
     def load_chat(self):
         """
@@ -76,12 +72,14 @@ class ChatBot:
         qa_chain = RetrievalQA.from_chain_type(
             self.llm, retriever=self.vectordb.as_retriever())
 
-        # print(f"{self.name}: {response['answer']}")
+        if self.agent.cot:
+            self.question = "step by step, and one by one explain"
 
         exit_flag = False
         while not exit_flag:
             quest = input(
                 f"Please ask a question about {self.name} or type 'exit' to end: ")
+            quest = self.question + quest
 
             if quest.lower() == 'exit':
                 exit_flag = True

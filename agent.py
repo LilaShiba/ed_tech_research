@@ -100,4 +100,6 @@ if __name__ == "__main__":
     # Load Course Embeddings Demo
     testAgent = Agent(
         "Agent_Time", "chroma_db/order-of-time", True)
+    # Enable Chains of Thought
+    testAgent.cot = True
     testAgent.load_course()
