@@ -1,8 +1,14 @@
 """ Start Chat with resources """
-
-
-from langchain.chains import RetrievalQA
+import os
+from langchain.embeddings.sentence_transformer import \
+    SentenceTransformerEmbeddings
+from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA
+import pprint
+
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
 class ChatBot:
@@ -11,15 +17,20 @@ class ChatBot:
     def __init__(self, agent_instance):
         """ Chat with resources """
         self.agent = agent_instance
-        self.name = agent_instance.name
+        self.name = 'test'
+        self.current_question = None
+        self.qa_chain = None
+        self.retriever = None
+        self.vectordb = None
+        self.question = None
+
+        self.model = "facebook-dpr-ctx_encoder-multiset-base"
+
+        self.embedding_function = SentenceTransformerEmbeddings(
+            model_name=self.model)
+
         self.llm = ChatOpenAI(
             model_name="gpt-3.5-turbo", temperature=0.5)
-        self.current_question = None
-
-    def question(self, quest):
-        """ Chat with resources """
-
-        self.current_question = quest
 
     def enter_chat(self, quest=None):
         """ Start Chat with resources """
@@ -47,4 +58,40 @@ class ChatBot:
                 print("Goodbye!")
             else:
                 response = qa_chain({"query": quest})
+                print.pprint(f"{self.name}: {response}")
+
+    def load_chat(self):
+        """
+        Chat with default agent settings
+        """
+
+        print('agent loaded')
+
+        # Enter Chat Stream
+
+        qa_chain = RetrievalQA.from_chain_type(
+            self.llm, retriever=self.vectordb.as_retriever())
+
+        if self.agent.cot:
+            self.question = "step by step, and one by one explain"
+
+        exit_flag = False
+        while not exit_flag:
+            quest = input(
+                f"Please ask a question about {self.name} or type 'exit' to end: ")
+            quest = self.question + quest
+
+            if quest.lower() == 'exit':
+                exit_flag = True
+                print("Goodbye!")
+            else:
+                response = qa_chain({"query": quest})
                 print(f"{self.name}: {response}")
+
+    def set_agent(self):
+        """
+        loads vector embeddings for Agent parent class
+        """
+        self.vectordb = Chroma(
+            persist_directory="chroma_db/order-of-time", embedding_function=self.embedding_function)
+        self.retriever = self.vectordb.as_retriever()

@@ -32,8 +32,14 @@ class Encoder:
         self.chunks = course_instance.chunks
         self.vectordb = course_instance.vectordb
         self.k_results = course_instance.k_results
-        self.embedding_function = course_instance.embedding_function
         self.embedding_check = False
+        self.name = course_instance.name
+        self.data_base = None
+
+        self.model = "facebook-dpr-ctx_encoder-multiset-base"
+
+        self.embedding_function = SentenceTransformerEmbeddings(
+            model_name=self.model)
 
     def create_chunks(self, docs, chunk=200, overlap=15):
         """
@@ -80,7 +86,9 @@ class Encoder:
         print("chunks created")
         self.embed_chunks()
         print("embedding created")
-        self.embedding_check = True
+        # save to disk
+        self.data_base = Chroma.from_documents(
+            self.docs, self.embedding_function, persist_directory="./chroma_db/"+self.name)
 
     def subprocess_persist(self, path, model="facebook-dpr-ctx_encoder-multiset-base"):
         """
@@ -108,7 +116,7 @@ class Encoder:
         self.vectordb = vectordb
         self.embedding_function = embedding_function
 
-    def encoded_query(self, qa, k_docs=15):
+    def encoded_query(self, q_a, k_docs=15):
         """
        Encodes query then searches
 
@@ -121,29 +129,28 @@ class Encoder:
 
         """
         if self.course_instance.cot:
-            cot_q = "step by step and one by one explain" + qa
+            cot_q = "step by step and one by one explain" + q_a
             docs = self.vectordb.similarity_search_with_score(
                 query=cot_q, distance_metric="cos", k=k_docs)
         else:
             docs = self.vectordb.similarity_search_with_score(
-                query=qa, distance_metric="cos", k=k_docs)
+                query=q_a, distance_metric="cos", k=k_docs)
         return docs, len(docs)
 
     def from_db(self, path_to_db, model="facebook-dpr-ctx_encoder-multiset-base"):
         """
-        Creates exisiting course obj, chunks,
-        from chroma db
-
-        Parameters:
-        path_to_db
-        (Opt) model: default dpr
-
-        Returns:
-        self.vectordb
-        wrapper around vector_db
+        loads vector embeddings for Agent
+        Start of memory 
+        TODO: Add to pipeline
         """
+
+        model = "facebook-dpr-ctx_encoder-multiset-base"
+
         embedding_function = SentenceTransformerEmbeddings(
             model_name=model)
 
+        print('loading agent...')
+
         self.vectordb = Chroma(persist_directory=path_to_db,
                                embedding_function=embedding_function)
+        print('agent loaded')

@@ -2,9 +2,10 @@
 Top Lvl Agent Module
 
 """
+
+from utils.chat import ChatBot
 from utils.document_loader import NewCourse
 from utils.dual_encoder import Encoder
-from utils.chat import ChatBot
 
 
 class Agent:
@@ -23,8 +24,11 @@ class Agent:
         self.name = name
         self.path = path
         self.cot = cot
+        print('creating course')
         self.course = NewCourse(name, path)
+        print('creating encoder')
         self.encoder = Encoder(self.course)
+        print('creating chat_bot')
         self.chat_bot = ChatBot(self)
         self.path = path
         self.course.knowledge_document_path = path
@@ -70,10 +74,32 @@ class Agent:
         self.encoder.subprocess_persist(self.course.knowledge_document_path)
         print(f'instance saved at docs/chroma/{self.name}')
 
+    def load_course(self):
+        """
+        load vector embeddings from Chroma
+
+        """
+        print("waking up agent")
+        self.chat_bot.set_agent()
+        self.chat_bot.load_chat()
+
+    def load_mem(self):
+        """
+       load Agent Memory
+       Provided self.path is to the DB
+       """
+
 
 if __name__ == "__main__":
+    # Create Course Demo
+    # testAgent = Agent(
+    #     "order-of-time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
+    # testAgent.new_course()
+    # testAgent.start_chat("What is this document about?")
 
+    # Load Course Embeddings Demo
     testAgent = Agent(
-        "Agent_Time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
-    testAgent.new_course()
-    testAgent.start_chat("What is this document about?")
+        "Agent_Time", "chroma_db/order-of-time", True)
+    # Enable Chains of Thought
+    testAgent.cot = True
+    testAgent.load_course()
