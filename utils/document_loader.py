@@ -50,6 +50,7 @@ class NewCourse:
         loader = PyPDFLoader(knowledge_document_path)
         self.docs = loader.load()
         print('docs created')
+        return self.docs
 
     def from_txt(self, knowledge_document_path):
         """
@@ -69,6 +70,7 @@ class NewCourse:
         loader = TextLoader(knowledge_document_path)
         self.docs = loader.load()
         print('docs created')
+        return self.docs
 
     def from_csv(self, knowledge_document_path):
         """

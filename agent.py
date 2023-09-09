@@ -49,7 +49,7 @@ class Agent:
             self.course.docs)
         print('instance created')
 
-    def start_chat(self, quest=None):
+    def start_chat(self):
         """
         Chat with a resource
 
@@ -57,8 +57,7 @@ class Agent:
             - name: Name of the agent.
             - path: Document path.
         """
-
-        self.chat_bot.enter_chat(quest)
+        self.chat_bot.load_chat()
 
     def save(self):
         """
@@ -81,13 +80,35 @@ class Agent:
         """
         print("waking up agent")
         self.chat_bot.set_agent()
-        self.chat_bot.load_chat()
 
     def load_mem(self):
         """
        load Agent Memory
        Provided self.path is to the DB
        """
+
+    def add_memory(self, path, path_to_db):
+        '''
+         Add documents to vector db
+         path: document path
+         path_to_db: path to chroma 
+        '''
+        print(f'adding {path}')
+        pages = self.course.from_pdf(path)
+        docs = self.encoder.create_chunks(pages)
+        self.chat_bot.add_fractual(docs)
+        # self.encoder.vectordb.add_documents(embeddings)
+        print("memory updated")
+
+        with open('output.log', 'r') as file:
+            # Read the content of the file
+            pages = self.course.from_txt('output.log')
+            docs = self.encoder.create_chunks(pages)
+            self.chat_bot.add_fractual(docs)
+
+        # Clear the contents of the .log file
+        with open('output.log', 'w') as file:
+            pass
 
 
 if __name__ == "__main__":
@@ -101,5 +122,8 @@ if __name__ == "__main__":
     testAgent = Agent(
         "Agent_Time", "chroma_db/order-of-time", True)
     # Enable Chains of Thought
+    path_to_db = "chroma_db/order-of-time"
     testAgent.cot = True
     testAgent.load_course()
+    testAgent.add_memory("documents/HilbertSpaceMulti.pdf", path_to_db)
+    testAgent.start_chat()

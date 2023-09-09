@@ -1,11 +1,14 @@
 """ Start Chat with resources """
+import logging
 import os
+
+from langchain.chains import RetrievalQA
+from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.sentence_transformer import \
     SentenceTransformerEmbeddings
 from langchain.vectorstores import Chroma
-from langchain.chat_models import ChatOpenAI
-from langchain.chains import RetrievalQA
-import pprint
+
+logging.basicConfig(filename='output.log', level=logging.INFO)
 
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -59,6 +62,7 @@ class ChatBot:
             else:
                 response = qa_chain({"query": quest})
                 print.pprint(f"{self.name}: {response}")
+                logging.info(response['result'])
 
     def load_chat(self):
         """
@@ -87,6 +91,7 @@ class ChatBot:
             else:
                 response = qa_chain({"query": quest})
                 print(f"{self.name}: {response}")
+                logging.info(response['result'])
 
     def set_agent(self):
         """
@@ -95,3 +100,10 @@ class ChatBot:
         self.vectordb = Chroma(
             persist_directory="chroma_db/order-of-time", embedding_function=self.embedding_function)
         self.retriever = self.vectordb.as_retriever()
+        self.agent.encoder.vectordb = self.vectordb
+
+    def add_fractual(self, docs):
+        """
+        add documents to corpus
+        """
+        self.vectordb.aadd_documents(docs)
