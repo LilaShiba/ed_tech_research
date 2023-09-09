@@ -48,6 +48,7 @@ class Encoder:
         text_splitter = TokenTextSplitter(
             chunk_size=chunk, chunk_overlap=overlap)
         self.chunks = text_splitter.split_documents(docs)
+        return self.chunks
 
     def embed_chunks(self, persist_directory='docs/chroma/'):
         """
@@ -143,7 +144,7 @@ class Encoder:
         Start of memory 
         TODO: Add to pipeline
         """
-
+        self.path_to_db = path_to_db
         model = "facebook-dpr-ctx_encoder-multiset-base"
 
         embedding_function = SentenceTransformerEmbeddings(
@@ -154,3 +155,22 @@ class Encoder:
         self.vectordb = Chroma(persist_directory=path_to_db,
                                embedding_function=embedding_function)
         print('agent loaded')
+
+    def add_documents(self, path):
+        '''
+        Add documents to vector db
+        '''
+
+        self.vectordb.add_documents(documents=path)
+
+    def add_embeddings(self, docs, path_to_db):
+        """
+        Add documents
+        """
+        embedding = OpenAIEmbeddings()
+        vectordb = Chroma.from_documents(
+            documents=docs,
+            embedding=embedding,
+            persist_directory=path_to_db
+        )
+        return vectordb
