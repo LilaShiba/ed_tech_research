@@ -5,7 +5,8 @@ from langchain.embeddings.sentence_transformer import \
 from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
-import pprint
+import logging
+logging.basicConfig(filename='output.log', level=logging.INFO)
 
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -59,6 +60,7 @@ class ChatBot:
             else:
                 response = qa_chain({"query": quest})
                 print.pprint(f"{self.name}: {response}")
+                logging.info(response['result'])
 
     def load_chat(self):
         """
@@ -87,6 +89,7 @@ class ChatBot:
             else:
                 response = qa_chain({"query": quest})
                 print(f"{self.name}: {response}")
+                logging.info(response['result'])
 
     def set_agent(self):
         """
