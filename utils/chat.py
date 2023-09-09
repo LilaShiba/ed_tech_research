@@ -106,4 +106,4 @@ class ChatBot:
         """
         add documents to corpus
         """
-        self.vectordb.aadd_documents(docs)
+        self.vectordb.add_documents(docs)
