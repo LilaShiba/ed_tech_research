@@ -72,7 +72,7 @@ class ChatBot:
         print('agent loaded')
 
         # Enter Chat Stream
-
+        self.question = ''
         qa_chain = RetrievalQA.from_chain_type(
             self.llm, retriever=self.vectordb.as_retriever())
 
@@ -106,4 +106,6 @@ class ChatBot:
         """
         add documents to corpus
         """
+        self.vectordb = self.agent.encoder.vectordb
         self.vectordb.add_documents(docs)
+        self.vectordb.persist()
