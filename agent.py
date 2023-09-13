@@ -131,6 +131,6 @@ if __name__ == "__main__":
         "mem_bot", 'documents/HilbertSpaceMulti.pdf', True)
     mem_bot.new_course()
     db_path = '/chroma_db/mem_bot'
-    mem_bot.add_memory('documents/kbai_book.pdf', db_path)
+    # mem_bot.add_memory('documents/kbai_book.pdf', db_path)
     mem_bot.load_course()
     mem_bot.start_chat()
