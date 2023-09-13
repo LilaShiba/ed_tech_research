@@ -1,0 +1,123 @@
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+WARNING:urllib3.connectionpool:Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1343e6c50>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:urllib3.connectionpool:Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1343d8050>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:langchain.embeddings.openai:Retrying langchain.embeddings.openai.embed_with_retry.<locals>._embed_with_retry in 4.0 seconds as it raised APIConnectionError: Error communicating with OpenAI: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/embeddings (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1343d68d0>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")).
+INFO:backoff:Backing off send_request(...) for 0.6s (requests.exceptions.ConnectionError: HTTPSConnectionPool(host='app.posthog.com', port=443): Max retries exceeded with url: /batch/ (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1343d2cd0>: Failed to resolve 'app.posthog.com' ([Errno 8] nodename nor servname provided, or not known)")))
+INFO:backoff:Backing off send_request(...) for 0.6s (requests.exceptions.ConnectionError: HTTPSConnectionPool(host='app.posthog.com', port=443): Max retries exceeded with url: /batch/ (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1334763d0>: Failed to resolve 'app.posthog.com' ([Errno 8] nodename nor servname provided, or not known)")))
+INFO:backoff:Backing off send_request(...) for 3.9s (requests.exceptions.ConnectionError: HTTPSConnectionPool(host='app.posthog.com', port=443): Max retries exceeded with url: /batch/ (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x133471290>: Failed to resolve 'app.posthog.com' ([Errno 8] nodename nor servname provided, or not known)")))
+WARNING:urllib3.connectionpool:Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c7450>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:urllib3.connectionpool:Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c7a50>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:langchain.embeddings.openai:Retrying langchain.embeddings.openai.embed_with_retry.<locals>._embed_with_retry in 4.0 seconds as it raised APIConnectionError: Error communicating with OpenAI: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/embeddings (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c6510>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")).
+ERROR:backoff:Giving up send_request(...) after 4 tries (requests.exceptions.ConnectionError: HTTPSConnectionPool(host='app.posthog.com', port=443): Max retries exceeded with url: /batch/ (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c4350>: Failed to resolve 'app.posthog.com' ([Errno 8] nodename nor servname provided, or not known)")))
+WARNING:urllib3.connectionpool:Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333d4310>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:urllib3.connectionpool:Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c3910>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:langchain.embeddings.openai:Retrying langchain.embeddings.openai.embed_with_retry.<locals>._embed_with_retry in 4.0 seconds as it raised APIConnectionError: Error communicating with OpenAI: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/embeddings (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c3510>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")).
+WARNING:urllib3.connectionpool:Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c1c90>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:urllib3.connectionpool:Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c11d0>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:langchain.embeddings.openai:Retrying langchain.embeddings.openai.embed_with_retry.<locals>._embed_with_retry in 8.0 seconds as it raised APIConnectionError: Error communicating with OpenAI: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/embeddings (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333d4890>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")).
+WARNING:urllib3.connectionpool:Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c4250>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:urllib3.connectionpool:Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c4050>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:langchain.embeddings.openai:Retrying langchain.embeddings.openai.embed_with_retry.<locals>._embed_with_retry in 10.0 seconds as it raised APIConnectionError: Error communicating with OpenAI: HTTPSConnectionPool(host='api.openai.com', port=443): Max retries exceeded with url: /v1/embeddings (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c7f50>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")).
+WARNING:urllib3.connectionpool:Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x1333c7950>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+WARNING:urllib3.connectionpool:Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x13346cb90>: Failed to resolve 'api.openai.com' ([Errno 8] nodename nor servname provided, or not known)")': /v1/embeddings
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:root:Sure! Here is a step-by-step explanation of how to create a Python class that represents n vectors of probability in Hilbert space and allows for vector collapse and cosine comparison:
+
+Step 1: Import the required modules.
+You will need to import the math module to perform mathematical operations and the numpy module to handle vector operations efficiently. You can use the following code to import these modules:
+
+```python
+import math
+import numpy as np
+```
+
+Step 2: Create the Vector class.
+Define a Vector class that will represent individual vectors in the Hilbert space. Each vector will have properties like its probability values and methods to perform vector operations. Here is an example implementation:
+
+```python
+class Vector:
+    def __init__(self, probabilities):
+        self.probabilities = np.array(probabilities)
+        
+    def normalize(self):
+        norm = np.linalg.norm(self.probabilities)
+        self.probabilities = self.probabilities / norm
+        
+    def collapse(self):
+        probabilities_squared = np.square(self.probabilities)
+        random_num = np.random.rand()
+        cumulative_sum = np.cumsum(probabilities_squared)
+        collapsed_index = np.argmax(cumulative_sum >= random_num)
+        self.probabilities = np.zeros_like(self.probabilities)
+        self.probabilities[collapsed_index] = 1
+        
+    def cosine_similarity(self, other_vector):
+        dot_product = np.dot(self.probabilities, other_vector.probabilities)
+        norm_self = np.linalg.norm(self.probabilities)
+        norm_other = np.linalg.norm(other_vector.probabilities)
+        cosine_similarity = dot_product / (norm_self * norm_other)
+        return cosine_similarity
+```
+
+Step 3: Create the Vectors class.
+Define a Vectors class that will represent a collection of n vectors in the Hilbert space. This class will have methods to perform operations like collapsing a specific vector and calculating cosine similarities. Here is an example implementation:
+
+```python
+class Vectors:
+    def __init__(self, num_vectors, vector_size):
+        self.num_vectors = num_vectors
+        self.vector_size = vector_size
+        self.vectors = []
+        for _ in range(num_vectors):
+            probabilities = np.random.rand(vector_size)
+            vector = Vector(probabilities)
+            self.vectors.append(vector)
+            
+    def collapse_vector(self, vector_index):
+        self.vectors[vector_index].collapse()
+        
+    def cosine_similarity_all(self, assigned_vector):
+        cosine_similarities = []
+        for vector in self.vectors:
+            cosine_similarity = assigned_vector.cosine_similarity(vector)
+            cosine_similarities.append(cosine_similarity)
+        return cosine_similarities
+```
+
+And that's it! You have now created a Python class hierarchy that represents n vectors of probability in Hilbert space, allows for vector collapse, and performs cosine comparisons between an assigned vector and all other vectors for k vectors.
+INFO:root:L1 normalization, also known as L1-norm or Manhattan norm, is a mathematical technique used to normalize vectors. Normalization is the process of scaling the values in a vector to have a unit length or to fall within a specific range.
+
+In the case of L1 normalization, each value in the vector is divided by the sum of the absolute values of all the elements in the vector. This ensures that the sum of the absolute values of the normalized vector is equal to 1.
+
+Here is a step-by-step explanation of L1 normalization:
+
+1. Start with a vector that you want to normalize.
+2. Calculate the sum of the absolute values of all the elements in the vector.
+3. Divide each element in the vector by the sum obtained in step 2.
+4. The resulting vector is the L1 normalized vector.
+
+For example, let's say we have a vector [4, -2, 6]. To perform L1 normalization:
+
+1. Calculate the sum of the absolute values: |4| + |-2| + |6| = 4 + 2 + 6 = 12.
+2. Divide each element by the sum: [4/12, -2/12, 6/12] = [1/3, -1/6, 1/2].
+
+The resulting L1 normalized vector is [1/3, -1/6, 1/2], where the sum of the absolute values is equal to 1.
+INFO:root:When comparing the cosine of two vectors, the values -1, 0, and 1 represent different scenarios:
+
+1. Cosine value of -1: This means that the two vectors are exactly opposite in direction. They have a 180-degree angle between them. In other words, the cosine of the angle between the vectors is -1.
+
+2. Cosine value of 0: This means that the two vectors are perpendicular to each other, with a 90-degree angle between them. So, the cosine of the angle between the vectors is 0.
+
+3. Cosine value of 1: This means that the two vectors are parallel and in the same direction. They have a 0-degree angle between them. In other words, the cosine of the angle between the vectors is 1.
+
+These values help us understand the relationship between the directions of two vectors when comparing their cosines.

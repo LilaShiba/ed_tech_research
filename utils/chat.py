@@ -33,7 +33,7 @@ class ChatBot:
             model_name=self.model)
 
         self.llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo", temperature=0.5)
+            model_name="gpt-3.5-turbo", temperature=0.9)
 
     def enter_chat(self, quest=None):
         """ Start Chat with resources """
@@ -72,7 +72,7 @@ class ChatBot:
         print('agent loaded')
 
         # Enter Chat Stream
-
+        self.question = ''
         qa_chain = RetrievalQA.from_chain_type(
             self.llm, retriever=self.vectordb.as_retriever())
 
@@ -106,4 +106,6 @@ class ChatBot:
         """
         add documents to corpus
         """
-        self.vectordb.aadd_documents(docs)
+        self.vectordb = self.agent.encoder.vectordb
+        self.vectordb.add_documents(docs)
+        self.vectordb.persist()

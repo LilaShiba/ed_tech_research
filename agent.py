@@ -118,12 +118,19 @@ if __name__ == "__main__":
     # testAgent.new_course()
     # testAgent.start_chat("What is this document about?")
 
-    # Load Course Embeddings Demo
-    testAgent = Agent(
-        "Agent_Time", "chroma_db/order-of-time", True)
     # Enable Chains of Thought
-    path_to_db = "chroma_db/order-of-time"
-    testAgent.cot = True
-    testAgent.load_course()
-    testAgent.add_memory("documents/HilbertSpaceMulti.pdf", path_to_db)
-    testAgent.start_chat()
+    # Memory & COT example
+    # testAgent = Agent(
+    #     "queer_bot", "chroma_db/order-of-time", True)
+    # testAgent.cot = True
+    # testAgent.load_course()
+    # testAgent.add_memory("documents/HilbertSpaceMulti.pdf", path_to_db)
+    # testAgent.start_chat()
+
+    mem_bot = Agent(
+        "mem_bot", 'documents/HilbertSpaceMulti.pdf', True)
+    mem_bot.new_course()
+    db_path = '/chroma_db/mem_bot'
+    # mem_bot.add_memory('documents/kbai_book.pdf', db_path)
+    mem_bot.load_course()
+    mem_bot.start_chat()
