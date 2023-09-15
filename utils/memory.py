@@ -2,7 +2,6 @@
 Memory For Agent Module
 
 """
-from langchain.vectorstores import Chroma
 
 
 class Memory:
