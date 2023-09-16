@@ -80,7 +80,7 @@ class Agent:
         load vector embeddings from Chroma
 
         """
-        print("waking up agent ", + self.name)
+        print(f'waking up agent {self.name}')
         self.chat_bot.set_agent()
 
     def load_mem(self):

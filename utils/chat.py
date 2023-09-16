@@ -79,3 +79,19 @@ class ChatBot:
         self.agent.vectordb = self.agent.vectordb
         self.agent.vectordb.add_documents(docs)
         self.agent.vectordb.persist()
+
+    def one_question(self, question):
+        '''
+        For Pack Grand-Parent Class
+        Chat with Agent one question at a time
+        '''
+        self.question = question
+        qa_chain = RetrievalQA.from_chain_type(
+            self.llm, retriever=self.agent.vectordb.as_retriever())
+
+        if self.agent.cot_name == 1:
+            self.question = "step by step, and one by one explain: " + self.question
+
+        response = qa_chain({"query": self.question})
+        print(f"{self.name}: {response}")
+        logging.info(response['result'])

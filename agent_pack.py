@@ -1,5 +1,6 @@
 from agent import Agent
 from typing import Any
+import logging
 
 
 class Pack:
@@ -18,24 +19,26 @@ class Pack:
         self.agent_corpus: Agent = Agent(
             "agent_corpus", main_document_path, False, 3)
 
+        # Combine paths with agents
         self.agents = zip([self.agent_cot, self.agent_quant,
                           self.agent_corpus], agent_paths)
         self.corpus_path_array = corpus_path_array
-
+        # Create or load embeddings
         self.load_agent_docs()
 
     def load_agent_docs(self):
         '''
-        Loads embeddings for Agent_Name at DB_Path
+        Load or Create embeddings for Agent_Name at DB_Path
 
         '''
         idx = 0
         for agent, db_path in self.agents:
-
+            # New Instance
             if db_path == 0:
                 agent.new_course()
                 if idx == 2:
                     self.load_docs()
+            # Load VectorDB
             else:
                 agent.path = db_path
                 agent.load_course()
@@ -51,6 +54,28 @@ class Pack:
             self.agent_corpus.chat_bot.add_fractual(doc)
         print('meow, I am created')
 
+    def chat(self):
+        '''
+        Speak with all agents at one time
+        '''
+        exit_flag = False
+
+        while not exit_flag:
+            # Get question
+            prompt = input("please ask a question to the pack")
+            # Exit Path
+            if prompt == 'exit':
+                exit_flag = True
+
+            res = {
+                "agent_cot": self.agent_cot.chat_bot.one_question(prompt),
+                "agent_quant": self.agent_corpus.chat_bot.one_question(prompt),
+                "agent_corpus": self.agent_quant.chat_bot.one_question(prompt)
+            }
+
+        logging.info(res)
+        print(res)
+
 
 if __name__ == '__main__':
     main_doc_path = "documents/Norman-CognitiveEngineering.pdf"
@@ -62,3 +87,4 @@ if __name__ == '__main__':
                       'chroma_db/agent_quant', 'chroma_db/agent_corpus']
 
     test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
+    test_agent.chat()
