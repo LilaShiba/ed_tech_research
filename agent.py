@@ -26,18 +26,17 @@ class Agent:
         self.cot = cot
         self.cot_name = cot_type
         self.vectordb = None
-        print('creating course')
+        print('creating course for ' + self.name)
         self.course = NewCourse(name, path)
-        print('creating encoder')
+        print('creating encoder for ' + self.name)
         self.encoder = Encoder(self.course)
-        print('creating chat_bot')
+        print('creating chat_bot for ' + self.name)
         self.chat_bot = ChatBot(self)
         self.path = path
         self.course.knowledge_document_path = path
         self.agent_instance = None
         self.current_docs = None
-
-        print(f'the knowledge document being used is {path}')
+        print(f'the path being used for {self.name} is {path}')
 
     def new_course(self):
         """
@@ -81,7 +80,7 @@ class Agent:
         load vector embeddings from Chroma
 
         """
-        print("waking up agent")
+        print("waking up agent ", + self.name)
         self.chat_bot.set_agent()
 
     def load_mem(self):
