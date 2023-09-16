@@ -24,7 +24,6 @@ class ChatBot:
         self.current_question = None
         self.qa_chain = None
         self.retriever = None
-        self.vectordb = None
         self.question = None
 
         self.model = "facebook-dpr-ctx_encoder-multiset-base"
@@ -34,35 +33,6 @@ class ChatBot:
 
         self.llm = ChatOpenAI(
             model_name="gpt-3.5-turbo", temperature=0.9)
-
-    def enter_chat(self, quest=None):
-        """ Start Chat with resources """
-
-        llm = self.llm
-        qa_chain = RetrievalQA.from_chain_type(
-            llm, retriever=self.agent.encoder.vectordb.as_retriever())
-
-        if quest and self.agent.cot:
-            response = qa_chain({"query": quest})
-            print(f"{self.name}: {response}")
-        else:
-            response = qa_chain({"query": quest})
-            print(f"{self.name}: {response}")
-
-            # print(f"{self.name}: {response['answer']}")
-
-        exit_flag = False
-        while not exit_flag:
-            quest = input(
-                f"Please ask a question about {self.name} or type 'exit' to end: ")
-
-            if quest.lower() == 'exit':
-                exit_flag = True
-                print("Goodbye!")
-            else:
-                response = qa_chain({"query": quest})
-                print.pprint(f"{self.name}: {response}")
-                logging.info(response['result'])
 
     def load_chat(self):
         """
@@ -74,10 +44,10 @@ class ChatBot:
         # Enter Chat Stream
         self.question = ''
         qa_chain = RetrievalQA.from_chain_type(
-            self.llm, retriever=self.vectordb.as_retriever())
+            self.llm, retriever=self.agent.vectordb.as_retriever())
 
-        if self.agent.cot:
-            self.question = "step by step, and one by one explain"
+        if self.agent.cot_name == 1:
+            self.question = "step by step, and one by one explain: "
 
         exit_flag = False
         while not exit_flag:
@@ -85,9 +55,9 @@ class ChatBot:
                 f"Please ask a question about {self.name} or type 'exit' to end: ")
             quest = self.question + quest
 
-            if quest.lower() == 'exit':
+            if quest.lower() == 'exit' or "exit" in quest.lower():
                 exit_flag = True
-                print("Goodbye!")
+                print("Goodbye BB!")
             else:
                 response = qa_chain({"query": quest})
                 print(f"{self.name}: {response}")
@@ -97,15 +67,31 @@ class ChatBot:
         """
         loads vector embeddings for Agent parent class
         """
-        self.vectordb = Chroma(
-            persist_directory="chroma_db/order-of-time", embedding_function=self.embedding_function)
-        self.retriever = self.vectordb.as_retriever()
-        self.agent.encoder.vectordb = self.vectordb
+        self.agent.vectordb = Chroma(
+            persist_directory="chroma_db/"+self.name, embedding_function=self.embedding_function)
+        self.retriever = self.agent.vectordb.as_retriever()
 
     def add_fractual(self, docs):
         """
         add documents to corpus
+
         """
-        self.vectordb = self.agent.encoder.vectordb
-        self.vectordb.add_documents(docs)
-        self.vectordb.persist()
+        self.agent.vectordb = self.agent.vectordb
+        self.agent.vectordb.add_documents(docs)
+        self.agent.vectordb.persist()
+
+    def one_question(self, question):
+        '''
+        For Pack Grand-Parent Class
+        Chat with Agent one question at a time
+        '''
+        self.question = question
+        qa_chain = RetrievalQA.from_chain_type(
+            self.llm, retriever=self.agent.vectordb.as_retriever())
+
+        if self.agent.cot_name == 1:
+            self.question = "step by step, and one by one explain: " + self.question
+
+        response = qa_chain({"query": self.question})
+        print(f"{self.name}: {response}")
+        logging.info(response['result'])

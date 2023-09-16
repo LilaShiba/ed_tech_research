@@ -13,7 +13,7 @@ class Agent:
        Encoder instance & NewCourse instance 
     """
 
-    def __init__(self, name: str, path: str, cot: bool):
+    def __init__(self, name: str, path: str, cot: bool, cot_type: int):
         """
         Initializes the Agent with a name and path.
 
@@ -24,17 +24,19 @@ class Agent:
         self.name = name
         self.path = path
         self.cot = cot
-        print('creating course')
+        self.cot_name = cot_type
+        self.vectordb = None
+        print('creating course for ' + self.name)
         self.course = NewCourse(name, path)
-        print('creating encoder')
+        print('creating encoder for ' + self.name)
         self.encoder = Encoder(self.course)
-        print('creating chat_bot')
+        print('creating chat_bot for ' + self.name)
         self.chat_bot = ChatBot(self)
         self.path = path
         self.course.knowledge_document_path = path
         self.agent_instance = None
         self.current_docs = None
-        print(f'the knowledge document being used is {path}')
+        print(f'the path being used for {self.name} is {path}')
 
     def new_course(self):
         """
@@ -45,7 +47,7 @@ class Agent:
             - path: Document path.
         """
         self.course.from_pdf(self.path)
-        self.encoder.subprocess_create_embeddings(
+        self.vectordb = self.encoder.subprocess_create_embeddings(
             self.course.docs)
         print('instance created')
 
@@ -78,7 +80,7 @@ class Agent:
         load vector embeddings from Chroma
 
         """
-        print("waking up agent")
+        print(f'waking up agent {self.name}')
         self.chat_bot.set_agent()
 
     def load_mem(self):
@@ -96,7 +98,9 @@ class Agent:
         print(f'adding {path}')
         pages = self.course.from_pdf(path)
         docs = self.encoder.create_chunks(pages)
-        self.chat_bot.add_fractual(docs)
+
+        self.vectordb.add_documents(docs)
+        self.vectordb.persist()
         # self.encoder.vectordb.add_documents(embeddings)
         print("memory updated")
 
@@ -128,9 +132,11 @@ if __name__ == "__main__":
     # testAgent.start_chat()
 
     mem_bot = Agent(
-        "mem_bot", 'documents/HilbertSpaceMulti.pdf', True)
+        "mem_bot", 'documents/HilbertSpaceMulti.pdf', True, 1)
     mem_bot.new_course()
     db_path = '/chroma_db/mem_bot'
-    # mem_bot.add_memory('documents/kbai_book.pdf', db_path)
+    mem_bot.path = db_path
     mem_bot.load_course()
+    mem_bot.add_memory(
+        'documents/VisualizingQuantumCircuitProbability.pdf', db_path)
     mem_bot.start_chat()

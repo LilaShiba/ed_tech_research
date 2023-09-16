@@ -35,6 +35,7 @@ class Encoder:
         self.embedding_check = False
         self.name = course_instance.name
         self.data_base = None
+        self.path_to_db = None
 
         self.model = "facebook-dpr-ctx_encoder-multiset-base"
 
@@ -88,8 +89,10 @@ class Encoder:
         self.embed_chunks()
         print("embedding created")
         # save to disk
-        self.data_base = Chroma.from_documents(
+        self.vectordb = Chroma.from_documents(
             self.docs, self.embedding_function, persist_directory="./chroma_db/"+self.name)
+        self.course_instance.vectordb = self.vectordb
+        return self.vectordb
 
     def subprocess_persist(self, path, model="facebook-dpr-ctx_encoder-multiset-base"):
         """
@@ -116,6 +119,8 @@ class Encoder:
         vectordb.persist()
         self.vectordb = vectordb
         self.embedding_function = embedding_function
+        self.course_instance.vectordb = self.vectordb
+        self.path_to_db = path
 
     def encoded_query(self, q_a, k_docs=15):
         """
