@@ -47,7 +47,7 @@ class Agent:
             - path: Document path.
         """
         self.course.from_pdf(self.path)
-        self.encoder.subprocess_create_embeddings(
+        self.vectordb = self.encoder.subprocess_create_embeddings(
             self.course.docs)
         print('instance created')
 

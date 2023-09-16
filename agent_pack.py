@@ -23,6 +23,7 @@ class Pack:
         self.agents = zip([self.agent_cot, self.agent_quant,
                           self.agent_corpus], agent_paths)
         self.corpus_path_array = corpus_path_array
+        self.main_document_path = main_doc_path
         # Create or load embeddings
         self.load_agent_docs()
 
@@ -53,6 +54,18 @@ class Pack:
             print('loading: ', doc)
             self.agent_corpus.chat_bot.add_fractual(doc)
         print('meow, I am created')
+
+    def add_docs(self, documents: list):
+        '''
+        update all agents with list of documents
+        '''
+
+        for doc in documents:
+            print('adding: ', doc)
+            self.agent_corpus.chat_bot.add_fractual(doc)
+            self.agent_cot.chat_bot.add_fractual(doc)
+            self.agent_quant.chat_bot.add_fractual(doc)
+        print('upload successful :)')
 
     def chat(self):
         '''
@@ -87,4 +100,5 @@ if __name__ == '__main__':
                       'chroma_db/agent_quant', 'chroma_db/agent_corpus']
 
     test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
+    # test_agent.add_docs(['documents'])
     test_agent.chat()

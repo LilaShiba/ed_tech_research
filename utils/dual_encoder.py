@@ -92,6 +92,7 @@ class Encoder:
         self.vectordb = Chroma.from_documents(
             self.docs, self.embedding_function, persist_directory="./chroma_db/"+self.name)
         self.course_instance.vectordb = self.vectordb
+        return self.vectordb
 
     def subprocess_persist(self, path, model="facebook-dpr-ctx_encoder-multiset-base"):
         """
