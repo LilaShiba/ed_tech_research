@@ -94,6 +94,15 @@ class Encoder:
         self.course_instance.vectordb = self.vectordb
         return self.vectordb
 
+    def embed_vectors(self, docs):
+        '''
+        taskes in docs and returns vectors
+        '''
+        self.create_chunks(docs)
+        print("chunks created")
+        self.embed_chunks()
+        print("embedding created")
+
     def subprocess_persist(self, path, model="facebook-dpr-ctx_encoder-multiset-base"):
         """
         Creates new course docs, chunks, and embeddings 

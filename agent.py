@@ -46,9 +46,15 @@ class Agent:
             - name: Name of the agent.
             - path: Document path.
         """
-        self.course.from_pdf(self.path)
-        self.vectordb = self.encoder.subprocess_create_embeddings(
-            self.course.docs)
+        if self.name == 'agent_corpus':
+            for doc in self.path:
+                print('loading: ', doc)
+                self.chat_bot.add_fractual(doc)
+
+        else:
+            self.course.from_pdf(self.path)
+            self.vectordb = self.encoder.subprocess_create_embeddings(
+                self.course.docs)
         print('instance created')
 
     def start_chat(self):
@@ -104,15 +110,17 @@ class Agent:
         # self.encoder.vectordb.add_documents(embeddings)
         print("memory updated")
 
-        with open('output.log', 'r') as file:
-            # Read the content of the file
-            pages = self.course.from_txt('output.log')
-            docs = self.encoder.create_chunks(pages)
-            self.chat_bot.add_fractual(docs)
+        # Enable for self feed back :O
 
-        # Clear the contents of the .log file
-        with open('output.log', 'w') as file:
-            pass
+        # with open('output.log', 'r') as file:
+        #     # Read the content of the file
+        #     pages = self.course.from_txt('output.log')
+        #     docs = self.encoder.create_chunks(pages)
+        #     self.chat_bot.add_fractual(docs)
+
+        # # Clear the contents of the .log file
+        # with open('output.log', 'w') as file:
+        #     pass
 
 
 if __name__ == "__main__":

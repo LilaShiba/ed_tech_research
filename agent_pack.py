@@ -12,17 +12,18 @@ class Pack:
         '''
         Create Pack
         '''
+        self.corpus_path_array = corpus_path_array
+
         self.agent_cot: Agent = Agent(
             "agent_cot", main_document_path, True, 1)
         self.agent_quant: Agent = Agent(
             "agent_quant", main_document_path, False, 2)
         self.agent_corpus: Agent = Agent(
-            "agent_corpus", main_document_path, False, 3)
+            "agent_corpus", corpus_path_array, False, 3)
 
         # Combine paths with agents
         self.agents = zip([self.agent_cot, self.agent_quant,
                           self.agent_corpus], agent_paths)
-        self.corpus_path_array = corpus_path_array
         self.main_document_path = main_doc_path
         # Create or load embeddings
         self.load_agent_docs()
@@ -32,18 +33,17 @@ class Pack:
         Load or Create embeddings for Agent_Name at DB_Path
 
         '''
-        idx = 0
         for agent, db_path in self.agents:
             # New Instance
             if db_path == 0:
                 agent.new_course()
-                if idx == 2:
-                    self.load_docs()
+
             # Load VectorDB
             else:
+                print('loading: ', self.main_document_path)
                 agent.path = db_path
                 agent.load_course()
-            idx += 1
+        print('loading complete')
 
     def load_docs(self):
         '''
@@ -72,7 +72,7 @@ class Pack:
         Speak with all agents at one time
         '''
         exit_flag = False
-
+        print('starting chat')
         while not exit_flag:
             # Get question
             prompt = input("please ask a question to the pack")
@@ -91,14 +91,12 @@ class Pack:
 
 
 if __name__ == '__main__':
-    main_doc_path = "documents/Norman-CognitiveEngineering.pdf"
-    corpus_path = ['documents/ASD.pdf', 'documents/HilbertSpaceMulti.pdf',
-                   'documents/LearnabilityandComplexityofQuantumSamples.pdf', 'documents/meowsmeowing.pdf',
-                   'documents/The-order-of-time-Carlo-Rovelli.pdf']
+    main_doc_path = "documents/ASD.pdf"
+    corpus_path = ['documents/ASD.pdf', 'documents/HilbertSpaceMulti.pdf'
+                   ]
 
-    agent_db_paths = ['chroma_db/agent_cot',
-                      'chroma_db/agent_quant', 'chroma_db/agent_corpus']
+    agent_db_paths = ['chroma_db/agent_cot', 'chroma_db/agent_quant', 0]
 
     test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
-    # test_agent.add_docs(['documents'])
+    # test_agent.add_docs([test_agent.main_document_path])
     test_agent.chat()

@@ -4,4 +4,6 @@ chroma*
 The-order-of-time-Carlo-Rovelli.pdf
 docs*
 chroma_db
+output.log
 pdf*
+.log*

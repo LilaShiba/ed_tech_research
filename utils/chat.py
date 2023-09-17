@@ -67,17 +67,30 @@ class ChatBot:
         """
         loads vector embeddings for Agent parent class
         """
+
         self.agent.vectordb = Chroma(
             persist_directory="chroma_db/"+self.name, embedding_function=self.embedding_function)
         self.retriever = self.agent.vectordb.as_retriever()
+        self.agent.vectordb.persist()
+
+        if isinstance(self.agent.path, list):
+            for doc in self.agent.path:
+                print('doc:', doc)
+                docs = self.agent.course.from_pdf(doc)
+                self.agent.encoder.embed_vectors(docs)
+
+                self.agent.vectordb.persist()
+                print('updated vector db')
+        print('init complete')
 
     def add_fractual(self, docs):
         """
         add documents to corpus
 
         """
-        self.agent.vectordb = self.agent.vectordb
-        self.agent.vectordb.add_documents(docs)
+        if not self.agent.vectordb:
+            self.set_agent()
+
         self.agent.vectordb.persist()
 
     def one_question(self, question):
