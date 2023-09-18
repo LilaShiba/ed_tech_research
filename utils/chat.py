@@ -76,9 +76,41 @@ class ChatBot:
         add documents to corpus
 
         """
-        self.agent.vectordb = self.agent.vectordb
-        self.agent.vectordb.add_documents(docs)
-        self.agent.vectordb.persist()
+        print('loading', self.agent.name)
+
+        docs = self.agent.course.from_pdf(self.agent.path)
+        self.agent.encoder.create_chunks(docs)
+        print("chunks created")
+        self.agent.encoder.embed_chunks()
+        print('Embedding created')
+
+        if not self.agent.vectordb and isinstance(self.agent.corpus_path_array,list):
+            print('corpus load start add_fractual: ')
+            for doc in self.agent.corpus_path_array:
+                print(doc)
+                docs = self.agent.course.from_pdf(doc)
+              
+                print("chunks created")
+                self.self.agent.encoder.embed_chunks()
+                # save to disk
+                self.agent.vectordb = Chroma.from_documents(
+                    self.docs, self.embedding_function, persist_directory="./chroma_db/"+self.name)
+
+        elif self.agent.vectordb:
+
+            print('loading', self.agent.name)
+            self.agent.vectordb.add_documents(docs)
+            self.agent.vectordb.persist()
+            print('update', self.agent.name)
+        else:
+            
+                # save to disk
+            self.agent.vectordb = Chroma.from_documents(
+                self.docs, self.embedding_function, persist_directory="./chroma_db/"+self.name)
+
+            print('loading', self.agent.name)
+            self.agent.vectordb.add_documents(docs)
+            self.agent.vectordb.persist()
 
     def one_question(self, question):
         '''

@@ -91,13 +91,15 @@ class Pack:
 
 
 if __name__ == '__main__':
-    main_doc_path = "documents/Norman-CognitiveEngineering.pdf"
+    main_doc_path = "documents/meowsmeowing.pdf"
     corpus_path = ['documents/ASD.pdf', 'documents/HilbertSpaceMulti.pdf',
-                   'documents/LearnabilityandComplexityofQuantumSamples.pdf', 'documents/meowsmeowing.pdf',
-                   'documents/The-order-of-time-Carlo-Rovelli.pdf']
+                   'documents/LearnabilityandComplexityofQuantumSamples.pdf', 'documents/meowsmeowing.pdf'
+                   ]
 
     agent_db_paths = ['chroma_db/agent_cot',
-                      'chroma_db/agent_quant', 'chroma_db/agent_corpus']
+                      'chroma_db/agent_quant', 0]
+
+    #agent_db_paths = [0,0,0]
 
     test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
     # test_agent.add_docs(['documents'])
