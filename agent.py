@@ -25,17 +25,20 @@ class Agent:
         self.path = path
         self.cot = cot
         self.cot_name = cot_type
+        self.path = path
+        self.knowledge_document_path = path
         self.vectordb = None
+        self.agent_instance = None
+        self.current_docs = None
+        self.docs = None
+        # Subprocesses
         print('creating course for ' + self.name)
         self.course = NewCourse(name, path)
         print('creating encoder for ' + self.name)
         self.encoder = Encoder(self.course)
         print('creating chat_bot for ' + self.name)
         self.chat_bot = ChatBot(self)
-        self.path = path
-        self.course.knowledge_document_path = path
-        self.agent_instance = None
-        self.current_docs = None
+     
         print(f'the path being used for {self.name} is {path}')
 
     def new_course(self):

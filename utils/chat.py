@@ -44,7 +44,7 @@ class ChatBot:
         # Enter Chat Stream
         self.question = ''
         qa_chain = RetrievalQA.from_chain_type(
-            self.llm, retriever=self.agent.vectordb.as_retriever())
+            self.llm, retriever=self.agent.encoder.vectordb.as_retriever())
 
         if self.agent.cot_name == 1:
             self.question = "step by step, and one by one explain: "
@@ -67,51 +67,55 @@ class ChatBot:
         """
         loads vector embeddings for Agent parent class
         """
-        self.agent.vectordb = Chroma(
+        self.agent.encoder.vectordb = Chroma(
             persist_directory="chroma_db/"+self.name, embedding_function=self.embedding_function)
-        self.retriever = self.agent.vectordb.as_retriever()
-
+        self.retriever = self.agent.encoder.vectordb.as_retriever()
+    def create_vectordb(self, docs):
+        '''
+        creates vectordb for parent agent
+        '''
+        print('docs, ', docs)
+        doc = self.agent.course.from_pdf(docs)
+        self.agent.encoder.subprocess_create_embeddings(doc)
+        print('process complete')
+       
     def add_fractual(self, docs):
         """
         add documents to corpus
 
         """
-        print('loading', self.agent.name)
+        print('loading:', self.agent.name)
 
-        docs = self.agent.course.from_pdf(self.agent.path)
-        self.agent.encoder.create_chunks(docs)
-        print("chunks created")
-        self.agent.encoder.embed_chunks()
-        print('Embedding created')
-
-        if not self.agent.vectordb and isinstance(self.agent.corpus_path_array,list):
+        # Process array of docs
+        if isinstance(self.agent.knowledge_document_path,list) and not self.agent.vectordb:
             print('corpus load start add_fractual: ')
-            for doc in self.agent.corpus_path_array:
+            for doc in self.agent.knowledge_document_path:
                 print(doc)
                 docs = self.agent.course.from_pdf(doc)
-              
+                self.agent.encoder.create_chunks(docs)
                 print("chunks created")
-                self.self.agent.encoder.embed_chunks()
+                self.agent.encoder.embed_chunks()
+                print("embedding complete")
                 # save to disk
-                self.agent.vectordb = Chroma.from_documents(
-                    self.docs, self.embedding_function, persist_directory="./chroma_db/"+self.name)
+        # No DB
+        elif not self.agent.vectordb:
+            # Load DB
+            if 'chroma_db' in docs:
+                print('no agent vector db. Creating now')
+                self.agent.encoder.vectordb = Chroma.from_documents(
+                self.agent.encoder.docs, self.agent.encoder.embedding_function, persist_directory="./chroma_db/"+self.name)
 
-        elif self.agent.vectordb:
-
-            print('loading', self.agent.name)
-            self.agent.vectordb.add_documents(docs)
-            self.agent.vectordb.persist()
-            print('update', self.agent.name)
         else:
-            
-                # save to disk
-            self.agent.vectordb = Chroma.from_documents(
-                self.docs, self.embedding_function, persist_directory="./chroma_db/"+self.name)
-
+            print(docs)
             print('loading', self.agent.name)
-            self.agent.vectordb.add_documents(docs)
-            self.agent.vectordb.persist()
-
+            doc = self.agent.course.from_pdf(docs)
+            self.agent.encoder.create_chunks(doc)
+            print("chunks created")
+            self.agent.encoder.embed_chunks()
+            print("embedding complete")
+            self.agent.encoder.vectordb.add_documents(doc)
+        #print('loading done for:', docs, ' in: ', self.agent.name)
+        self.agent.encoder.vectordb.persist()
     def one_question(self, question):
         '''
         For Pack Grand-Parent Class
@@ -119,7 +123,7 @@ class ChatBot:
         '''
         self.question = question
         qa_chain = RetrievalQA.from_chain_type(
-            self.llm, retriever=self.agent.vectordb.as_retriever())
+            self.llm, retriever=self.agent.encoder.vectordb.as_retriever())
 
         if self.agent.cot_name == 1:
             self.question = "step by step, and one by one explain: " + self.question

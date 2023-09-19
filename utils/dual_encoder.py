@@ -49,6 +49,7 @@ class Encoder:
         text_splitter = TokenTextSplitter(
             chunk_size=chunk, chunk_overlap=overlap)
         self.chunks = text_splitter.split_documents(docs)
+        self.course_instance.docs = docs
         return self.chunks
 
     def embed_chunks(self, persist_directory='docs/chroma/'):
@@ -63,6 +64,7 @@ class Encoder:
         Returns:
         self.vectordb
         """
+      
         embedding = OpenAIEmbeddings()
         self.vectordb = Chroma.from_documents(
             documents=self.chunks,

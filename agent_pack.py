@@ -17,13 +17,12 @@ class Pack:
         self.agent_quant: Agent = Agent(
             "agent_quant", main_document_path, False, 2)
         self.agent_corpus: Agent = Agent(
-            "agent_corpus", main_document_path, False, 3)
+            "agent_corpus", corpus_path_array, False, 3)
+        self.agent_corpus.path = main_doc_path
 
         # Combine paths with agents
         self.agents = zip([self.agent_cot, self.agent_quant,
                           self.agent_corpus], agent_paths)
-        self.corpus_path_array = corpus_path_array
-        self.main_document_path = main_doc_path
         # Create or load embeddings
         self.load_agent_docs()
 
@@ -55,13 +54,17 @@ class Pack:
             self.agent_corpus.chat_bot.add_fractual(doc)
         print('meow, I am created')
 
-    def add_docs(self, documents: list):
+    def add_docs(self, docs: list):
         '''
-        update all agents with list of documents
+        update all agents with list/path of document(s)
         '''
 
-        for doc in documents:
-            print('adding: ', doc)
+        if isinstance(docs, list):
+            for doc in docs:
+                self.agent_corpus.chat_bot.add_fractual(doc)
+                self.agent_cot.chat_bot.add_fractual(doc)
+                self.agent_quant.chat_bot.add_fractual(doc)
+        else:
             self.agent_corpus.chat_bot.add_fractual(doc)
             self.agent_cot.chat_bot.add_fractual(doc)
             self.agent_quant.chat_bot.add_fractual(doc)
@@ -97,10 +100,10 @@ if __name__ == '__main__':
                    ]
 
     agent_db_paths = ['chroma_db/agent_cot',
-                      'chroma_db/agent_quant', 0]
+                      'chroma_db/agent_quant', 'chroma_db/agent_corpus']
 
     #agent_db_paths = [0,0,0]
 
     test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
-    # test_agent.add_docs(['documents'])
+    test_agent.add_docs(['documents/kbai_book.pdf', 'documents/CoT_Memory_Quantum_Design.pdf'])
     test_agent.chat()
