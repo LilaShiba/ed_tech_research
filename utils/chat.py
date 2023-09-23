@@ -48,6 +48,10 @@ class ChatBot:
 
         if self.agent.cot_name == 1:
             self.question = "step by step, and one by one explain: "
+        elif self.agent.cot_name == 2:
+            self.question = "line by line, write python code that: "
+        elif self.agent.cot_name == 3:
+            self.question = "thought by thought, synthesize: "
 
         exit_flag = False
         while not exit_flag:
@@ -60,8 +64,8 @@ class ChatBot:
                 print("Goodbye BB!")
             else:
                 response = qa_chain({"query": quest})
-                print(f"{self.name}: {response}")
-                logging.info(response['result'])
+                # print(f"{self.name}: {response}")
+                logging.info(self.name, response)
 
     def set_agent(self):
         """
@@ -70,6 +74,7 @@ class ChatBot:
         self.agent.encoder.vectordb = Chroma(
             persist_directory="chroma_db/"+self.name, embedding_function=self.embedding_function)
         self.retriever = self.agent.encoder.vectordb.as_retriever()
+
     def create_vectordb(self, docs):
         '''
         creates vectordb for parent agent
@@ -78,7 +83,7 @@ class ChatBot:
         doc = self.agent.course.from_pdf(docs)
         self.agent.encoder.subprocess_create_embeddings(doc)
         print('process complete')
-       
+
     def add_fractual(self, docs):
         """
         add documents to corpus
@@ -87,7 +92,7 @@ class ChatBot:
         print('loading:', self.agent.name)
 
         # Process array of docs
-        if isinstance(self.agent.knowledge_document_path,list) and not self.agent.vectordb:
+        if isinstance(self.agent.knowledge_document_path, list) and not self.agent.vectordb:
             print('corpus load start add_fractual: ')
             for doc in self.agent.knowledge_document_path:
                 print(doc)
@@ -103,7 +108,7 @@ class ChatBot:
             if 'chroma_db' in docs:
                 print('no agent vector db. Creating now')
                 self.agent.encoder.vectordb = Chroma.from_documents(
-                self.agent.encoder.docs, self.agent.encoder.embedding_function, persist_directory="./chroma_db/"+self.name)
+                    self.agent.encoder.docs, self.agent.encoder.embedding_function, persist_directory="./chroma_db/"+self.name)
 
         else:
             print(docs)
@@ -114,14 +119,16 @@ class ChatBot:
             self.agent.encoder.embed_chunks()
             print("embedding complete")
             self.agent.encoder.vectordb.add_documents(doc)
-        #print('loading done for:', docs, ' in: ', self.agent.name)
+        # print('loading done for:', docs, ' in: ', self.agent.name)
         self.agent.encoder.vectordb.persist()
+
     def one_question(self, question):
         '''
         For Pack Grand-Parent Class
         Chat with Agent one question at a time
         '''
         self.question = question
+
         qa_chain = RetrievalQA.from_chain_type(
             self.llm, retriever=self.agent.encoder.vectordb.as_retriever())
 
@@ -129,5 +136,6 @@ class ChatBot:
             self.question = "step by step, and one by one explain: " + self.question
 
         response = qa_chain({"query": self.question})
-        print(f"{self.name}: {response}")
-        logging.info(response['result'])
+        # print(f"{self.name}: {response}")
+        # logging.info(response['result'])
+        return response['result']

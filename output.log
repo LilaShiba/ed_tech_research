@@ -1314,3 +1314,67 @@ processor = QuantumLanguageProcessor()
 processor.load_document("example_document.txt")
 processed_document = processor.process_document()
 INFO:root:Unfortunately, I do not have enough information about the "langchain" or the specific requirements for implementing quantum probability in document loading using Python. Could you please provide more details or clarify your question?
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:root:A foundation model is a pre-trained artificial intelligence (AI) model that serves as a starting point for building more specialized AI models. It is usually trained on a large dataset to learn patterns and relationships in the data. 
+
+Step by step, this is how a foundation model is created:
+
+1. Data Collection: First, a large dataset relevant to the problem domain is collected. This dataset should be representative and diverse to ensure the model learns well.
+
+2. Pre-processing: The collected data is then pre-processed to remove any noise or irrelevant information. This step may involve cleaning the data, handling missing values, and transforming the data into a suitable format for the model.
+
+3. Training: The pre-processed data is used to train the foundation model. During training, the model learns from the data to identify patterns, correlations, and features that are important for making predictions or generating outputs.
+
+4. Fine-tuning: Once the initial training is complete, the model may go through a process called fine-tuning. Fine-tuning helps to further optimize the model's performance by adjusting its parameters or hyperparameters.
+
+5. Evaluation: The trained foundation model is then evaluated using a separate set of data called a validation set. This evaluation helps assess the model's performance and identify any areas that need improvement.
+
+6. Deployment: After the model is trained and evaluated, it can be deployed for real-world use. This involves integrating the model into an application or system where it can perform the desired tasks, such as making predictions or generating responses.
+
+One by one, these steps build upon each other to create a foundation model that can be further customized or specialized for specific tasks or applications.
+INFO:root:A foundation model typically refers to a pre-trained model that serves as a starting point for various natural language processing (NLP) tasks such as text classification, named entity recognition, sentiment analysis, and question answering. These models are trained on large amounts of text data and learn to understand and generate human-like language patterns. Examples of foundation models include OpenAI's GPT-3, Google's BERT, and Facebook's RoBERTa.
+INFO:root:A foundation model refers to a pre-trained model that is designed to perform a specific task or a set of related tasks. These models are usually trained on large amounts of data and can be used as a starting point for developing more specific models. They serve as a foundation for various applications such as natural language processing, computer vision, and speech recognition.
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
