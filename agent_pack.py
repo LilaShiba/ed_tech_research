@@ -85,8 +85,6 @@ class Pack:
             # Exit Path
             if 'exit' in prompt:
                 exit_flag = True
-            if 'jaccard' in prompt:
-                return self.jaccard_similarity()
 
             res = {
                 "agent_cot": self.agent_cot.chat_bot.one_question(prompt),
@@ -94,11 +92,11 @@ class Pack:
                 "agent_corpus": self.agent_quant.chat_bot.one_question(prompt)
             }
 
-        logging.info(res)
-        print('Here are the collective answers: ')
-        print(res)
-        self.current_res = res
-        self.jaccard_similarity()
+            logging.info(res)
+            print('Here are the collective answers: ')
+            print(res)
+            self.current_res = res
+            self.jaccard_similarity(res)
 
     def jaccard_similarity(self, res=None):
         '''
@@ -108,19 +106,22 @@ class Pack:
         if not res:
             res = self.current_res
         # Step 1: Shingling
-        str_a = self.current_res['agent_cot']
-        str_b = self.current_res['agent_corpus']
-        str_c = self.current_res["agent_quant"]
+        str_a = res['agent_cot']
+        str_b = res['agent_corpus']
+        str_c = res["agent_quant"]
 
-        k = min(len(str_a), len(str_b), len(str_c)) - 1
+        # k = min(len(str_a), len(str_b), len(str_c)) - 1
+        k = 2
+        print(f'k: {k} and the string is {str_a}')
 
         shingles_a = set([str_a[i:i+k] for i in range(len(str_a) - k + 1)])
         shingles_b = set([str_b[i:i+k] for i in range(len(str_b) - k + 1)])
         shingles_c = set([str_c[i:i+k] for i in range(len(str_c) - k + 1)])
         shingles = [shingles_a, shingles_b, shingles_c]
-        combos = list(combinations(shingles, 3))
+        combos = list(combinations(shingles, 2))
 
-        for a, b in combos:
+        for combo in combos:
+            a, b = combo
             # Step 2: Intersection and Union
             intersection_a_b = a.intersection(b)
             union_a_b = a.union(b)
