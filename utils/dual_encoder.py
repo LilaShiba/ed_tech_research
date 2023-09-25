@@ -26,6 +26,7 @@ class Encoder:
         Parameters:
             - course_instance: Instance of NewCourse.
         """
+        self.chunk_size = 200
         self.course_instance = course_instance
         self.links = course_instance.links
         self.docs = course_instance.docs
@@ -50,6 +51,7 @@ class Encoder:
             chunk_size=chunk, chunk_overlap=overlap)
         self.chunks = text_splitter.split_documents(docs)
         self.course_instance.docs = docs
+        self.chunk_size = chunk
         return self.chunks
 
     def embed_chunks(self, persist_directory='docs/chroma/'):
@@ -64,7 +66,7 @@ class Encoder:
         Returns:
         self.vectordb
         """
-      
+
         embedding = OpenAIEmbeddings()
         self.vectordb = Chroma.from_documents(
             documents=self.chunks,

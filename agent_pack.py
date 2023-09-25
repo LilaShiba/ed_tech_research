@@ -1,4 +1,5 @@
 from agent import Agent
+from utils.metrics import ThoughtDiversity
 from typing import Any
 import logging
 from itertools import combinations
@@ -21,7 +22,7 @@ class Pack:
             "agent_quant", main_document_path, False, 2)
         self.agent_corpus: Agent = Agent(
             "agent_corpus", corpus_path_array, False, 3)
-        self.agent_corpus.path = main_doc_path
+        self.agent_corpus.path = main_document_path
 
         # Combine paths with agents
         self.agents = zip([self.agent_cot, self.agent_quant,
@@ -110,8 +111,8 @@ class Pack:
         str_b = res['agent_corpus']
         str_c = res["agent_quant"]
 
-        # k = min(len(str_a), len(str_b), len(str_c)) - 1
-        k = 2
+        # k = min(len(str_a), len(str_b), len(str_c)) - 1]
+        k = self.agent_corpus.encoder.chunk_size
         print(f'k: {k} and the string is {str_a}')
 
         shingles_a = set([str_a[i:i+k] for i in range(len(str_a) - k + 1)])
@@ -127,7 +128,9 @@ class Pack:
             union_a_b = a.union(b)
             # Step 3: Jaccard Index Calculation
             jaccard_index_a_b = len(intersection_a_b) / len(union_a_b)
-            self.current_jaccard_indices.append(jaccard_index_a_b)
+            self.current_jaccard_indices.append(
+                ((jaccard_index_a_b))
+            )
         print(self.current_jaccard_indices)
         return self.current_jaccard_indices
 
@@ -145,4 +148,6 @@ if __name__ == '__main__':
 
     test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
     # test_agent.add_docs(['documents/kbai_book.pdf', 'documents/CoT_Memory_Quantum_Design.pdf'])
-    test_agent.chat()
+    # test_agent.chat()
+    metrics = ThoughtDiversity(test_agent)
+    print(metrics.monte_carlo_sim())
