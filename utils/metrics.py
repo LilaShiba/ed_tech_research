@@ -44,11 +44,11 @@ class ThoughtDiversity:
         if not test_params:
             test_params = [self.agent_c.chat_bot.one_question(
                 "what is a foundational model"), self.agent_a.chat_bot.one_question("what is a foundational model")]
-        res = [self.current_mcs_samples.append(param)
-               for r in range(rounds) for param in test_params]
+        [self.current_mcs_samples.append(param)
+         for r in range(rounds) for param in test_params]
 
         # Join all strings into a single string, separating them by space
-        joined_strings = ' '.join(res)
+        joined_strings = ' '.join(self.current_mcs_samples)
 
         # Split the single string into words
         words = joined_strings.split()
@@ -56,9 +56,9 @@ class ThoughtDiversity:
         word_counts = Counter(words)
 
         counts = list(word_counts.values())
-        h = self.shannon_entropy(counts)
-        self.shannon_entropy_scores.append(h)
-        return self.shannon_entropy_scores
+        self.shannon_entropy_scores.append(self.shannon_entropy(counts))
+        self.true_diversity_scores.append(self.true_diversity(counts))
+        return self.shannon_entropy_scores, self.true_diversity_scores
 
     def shannon_entropy(self, counts: List[int]) -> float:
         """

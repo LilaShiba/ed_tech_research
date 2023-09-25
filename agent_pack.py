@@ -64,11 +64,13 @@ class Pack:
         '''
 
         if isinstance(docs, list):
+            print('meow')
             for doc in docs:
-                self.agent_corpus.chat_bot.add_fractual(doc)
-                self.agent_cot.chat_bot.add_fractual(doc)
-                self.agent_quant.chat_bot.add_fractual(doc)
+                self.agent_corpus.chat_bot.add_new_docs(doc)
+                self.agent_cot.chat_bot.add_new_docs(doc)
+                self.agent_quant.chat_bot.add_new_docs(doc)
         else:
+            print('bork')
             self.agent_corpus.chat_bot.add_fractual(doc)
             self.agent_cot.chat_bot.add_fractual(doc)
             self.agent_quant.chat_bot.add_fractual(doc)

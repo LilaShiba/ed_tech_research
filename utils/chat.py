@@ -139,3 +139,18 @@ class ChatBot:
         # print(f"{self.name}: {response}")
         # logging.info(response['result'])
         return response['result']
+
+    def add_new_docs(self, docs):
+        '''
+        add new docs to db
+        '''
+        print(docs)
+        print('loading', self.agent.name)
+        doc = self.agent.course.from_pdf(docs)
+        self.agent.encoder.create_chunks(doc)
+        print("chunks created")
+        self.agent.encoder.embed_chunks()
+        print("embedding complete")
+        self.agent.encoder.vectordb.add_documents(doc)
+        # print('loading done for:', docs, ' in: ', self.agent.name)
+        self.agent.encoder.vectordb.persist()
