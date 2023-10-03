@@ -1,6 +1,7 @@
 from typing import List, Any
 import numpy as np
 from collections import Counter
+import logging
 
 
 class ThoughtDiversity:
@@ -8,7 +9,7 @@ class ThoughtDiversity:
     Class to measure the diversity of thought in an AI agent composed of several agents.
     """
 
-    def __init__(self, agent_instance: Any) -> None:
+    def __init__(self, pack: Any) -> None:
         """
         Initializes the D_Metrics instance with an Agent_Pack instance.
         Provides a framework to test for diversity of thought.
@@ -16,11 +17,8 @@ class ThoughtDiversity:
         Parameters:
         agent_instance (Any): An instance of Agent_Pack.
         """
-        self.agent_a = agent_instance.agent_cot
-        self.agent_b = agent_instance.agent_quant
-        self.agent_c = agent_instance.agent_corpus
 
-        self.agents = [self.agent_a, self.agent_b, self.agent_c]
+        self.pack = pack
         self.scores = []
         self.snd_scores = []
         self.jaccard_indexs = []
@@ -28,8 +26,7 @@ class ThoughtDiversity:
         self.shannon_entropy_scores = []
         self.true_diversity_scores = []
 
-    def monte_carlo_sim(self, rounds: int = 10, agent: Any = None,
-                        test_params: List[Any] = None) -> List[Any]:
+    def monte_carlo_sim(self, rounds: int = 5) -> List[Any]:
         """
         Run a Monte Carlo simulation.
 
@@ -41,15 +38,13 @@ class ThoughtDiversity:
         Returns:
         List[Any]: The results of the Monte Carlo simulation.
         """
-        if not test_params:
-            test_params = [self.agent_c.chat_bot.one_question(
-                "what is a foundational model"), self.agent_a.chat_bot.one_question("what is a foundational model")]
-        [self.current_mcs_samples.append(param)
-         for r in range(rounds) for param in test_params]
-
+        res = [self.pack.one_question(
+            "create a python function that takes in an agent that has three neural networks and returns the neural diversity as reported in SND")
+            for _ in range(rounds)]
+        logging.info(res)
         # Join all strings into a single string, separating them by space
-        joined_strings = ' '.join(self.current_mcs_samples)
-
+        joined_strings = ' '.join(res)
+        print('getting metrics H & D')
         # Split the single string into words
         words = joined_strings.split()
         # Count the occurrences of each word
@@ -58,7 +53,7 @@ class ThoughtDiversity:
         counts = list(word_counts.values())
         self.shannon_entropy_scores.append(self.shannon_entropy(counts))
         self.true_diversity_scores.append(self.true_diversity(counts))
-        return self.shannon_entropy_scores, self.true_diversity_scores
+        return self.shannon_entropy_scores, self.true_diversity_scores, res
 
     def shannon_entropy(self, counts: List[int]) -> float:
         """
@@ -91,6 +86,24 @@ class ThoughtDiversity:
         entropy = self.shannon_entropy(counts)
         diversity = np.exp(entropy)
         return diversity
+
+    def snd(self, questions, monte_Carlo_Simulation=False):
+        '''
+        System Neural Diversity
+        (Bonttni: 2023)
+
+        Measures the diversity of an ensamble agent
+        through combonatrics of pair-wise agent distance
+        Parameters:
+        questions:List of strings
+
+        Returns:
+        snd results of questions 
+
+        Options:
+        monte_Carlo_Simulation: Bool Default: False
+        '''
+
 
 # Example Usage:
 # Assuming Agent_Pack is defined and has the necessary attributes

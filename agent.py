@@ -38,7 +38,7 @@ class Agent:
         self.encoder = Encoder(self.course)
         print('creating chat_bot for ' + self.name)
         self.chat_bot = ChatBot(self)
-     
+
         print(f'the path being used for {self.name} is {path}')
 
     def new_course(self):
@@ -120,26 +120,25 @@ class Agent:
 
 if __name__ == "__main__":
     # Create Course Demo
-    # testAgent = Agent(
-    #     "order-of-time", 'documents/The-order-of-time-Carlo-Rovelli.pdf', True)
+    # testAgent = Agent("agent_snd", 'documents/SND.pdf', True, 1)
     # testAgent.new_course()
-    # testAgent.start_chat("What is this document about?")
+    # testAgent.start_chat()
 
     # Enable Chains of Thought
     # Memory & COT example
-    # testAgent = Agent(
-    #     "queer_bot", "chroma_db/order-of-time", True)
-    # testAgent.cot = True
-    # testAgent.load_course()
+    testAgent = Agent(
+        "agent_snd", "chroma_db/agent_snd", True, 1)
+    testAgent.cot = True
+    testAgent.load_course()
     # testAgent.add_memory("documents/HilbertSpaceMulti.pdf", path_to_db)
-    # testAgent.start_chat()
+    testAgent.start_chat()
 
-    mem_bot = Agent(
-        "mem_bot", 'documents/HilbertSpaceMulti.pdf', True, 1)
-    mem_bot.new_course()
-    db_path = '/chroma_db/mem_bot'
-    mem_bot.path = db_path
-    mem_bot.load_course()
-    mem_bot.add_memory(
-        'documents/VisualizingQuantumCircuitProbability.pdf', db_path)
-    mem_bot.start_chat()
+    # mem_bot = Agent(
+    #     "mem_bot", 'documents/HilbertSpaceMulti.pdf', True, 1)
+    # mem_bot.new_course()
+    # db_path = '/chroma_db/mem_bot'
+    # mem_bot.path = db_path
+    # mem_bot.load_course()
+    # mem_bot.add_memory(
+    #     'documents/VisualizingQuantumCircuitProbability.pdf', db_path)
+    # mem_bot.start_chat()

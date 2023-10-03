@@ -76,6 +76,16 @@ class Pack:
             self.agent_quant.chat_bot.add_fractual(doc)
         print('upload successful :)')
 
+    def one_question(self, prompt):
+        '''
+        one question for pack
+        '''
+        res = {
+            "agent_cot": self.agent_cot.chat_bot.one_question(prompt),
+            "agent_quant": self.agent_corpus.chat_bot.one_question(prompt),
+            "agent_corpus": self.agent_quant.chat_bot.one_question(prompt)
+        }
+
     def chat(self):
         '''
         Speak with all agents at one time
@@ -149,7 +159,7 @@ if __name__ == '__main__':
     # agent_db_paths = [0, 0, 0]
 
     test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
-    # test_agent.add_docs(['documents/kbai_book.pdf', 'documents/CoT_Memory_Quantum_Design.pdf'])
+    test_agent.add_docs(['documents/SND.pdf'])
     # test_agent.chat()
     metrics = ThoughtDiversity(test_agent)
     print(metrics.monte_carlo_sim())

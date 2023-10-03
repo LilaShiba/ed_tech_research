@@ -66,6 +66,7 @@ class ChatBot:
                 response = qa_chain({"query": quest})
                 # print(f"{self.name}: {response}")
                 logging.info(self.name, response)
+                print(response)
 
     def set_agent(self):
         """
