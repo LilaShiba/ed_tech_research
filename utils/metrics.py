@@ -26,7 +26,7 @@ class ThoughtDiversity:
         self.shannon_entropy_scores = []
         self.true_diversity_scores = []
 
-    def monte_carlo_sim(self, rounds: int = 5) -> List[Any]:
+    def monte_carlo_sim(self, question="", rounds: int = 5) -> List[Any]:
         """
         Run a Monte Carlo simulation.
 
@@ -39,12 +39,12 @@ class ThoughtDiversity:
         List[Any]: The results of the Monte Carlo simulation.
         """
         res = [self.pack.one_question(
-            "create a python function that takes in an agent that has three neural networks and returns the neural diversity as reported in SND")
+            question)
             for _ in range(rounds)]
         logging.info(res)
         # Join all strings into a single string, separating them by space
         joined_strings = ' '.join(res)
-        print('getting metrics H & D')
+        # print('getting metrics H & D')
         # Split the single string into words
         words = joined_strings.split()
         # Count the occurrences of each word

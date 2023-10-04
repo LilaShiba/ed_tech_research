@@ -138,7 +138,8 @@ class ChatBot:
 
         response = qa_chain({"query": self.question})
         # print(f"{self.name}: {response}")
-        # logging.info(response['result'])
+        logging.info(response['result'])
+
         return response['result']
 
     def add_new_docs(self, docs):
