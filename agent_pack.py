@@ -40,8 +40,7 @@ class Pack:
             # New Instance
             if db_path == 0:
                 agent.new_course()
-                if idx == 2:
-                    self.load_docs()
+
             # Load VectorDB
             else:
                 agent.path = db_path
@@ -71,9 +70,9 @@ class Pack:
                 self.agent_quant.chat_bot.add_new_docs(doc)
         else:
             print('bork')
-            self.agent_corpus.chat_bot.add_fractual(doc)
-            self.agent_cot.chat_bot.add_fractual(doc)
-            self.agent_quant.chat_bot.add_fractual(doc)
+            self.agent_corpus.chat_bot.add_fractual(docs)
+            self.agent_cot.chat_bot.add_fractual(docs)
+            self.agent_quant.chat_bot.add_fractual(docs)
         print('upload successful :)')
 
     def one_question(self, prompt):
@@ -82,9 +81,9 @@ class Pack:
         '''
         res = {
             "agent_cot": self.agent_cot.chat_bot.one_question(prompt),
-            "agent_quant": self.agent_corpus.chat_bot.one_question(prompt),
             "agent_corpus": self.agent_quant.chat_bot.one_question(prompt)
         }
+        return res
 
     def chat(self):
         '''

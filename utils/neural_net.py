@@ -193,14 +193,21 @@ class DeepNetRunner:
 
 
 if __name__ == "__main__":
-    # Generate random training data (this tests overgeneralizing as no pattern should be in random)
-    X_train = np.random.rand(1000, 1000)  # 10 features, 1000 examples
-    y_train = np.random.rand(2, 1000)    # 1 output, 1000 examples
+    mu = 0          # mean
+    sigma = 1       # standard deviation
+    input_size = 10  # for example
+    train_size = 1000  # number of training examples
+    out_put_size = 3
+
+    # Using normal distribution
+    X_train = np.random.normal(mu, sigma, (input_size, train_size))
+    # 1 output, 1000 examples
+    y_train = np.random.normal(mu, sigma, (out_put_size, train_size))
 
     # Initialize a deep network: [10, 5, 5, 1] means an input layer of size 10,
     # two hidden layers of size 5, and an output layer of size 1
     deep_network = DeepNetRunner(name="DeepNetwork", layer_sizes=[
-                                 1000, 10, 10, 2], net_type=3)
+                                 input_size, 5,5,5,5,5,5, out_put_size], net_type=3)
 
     # Train the deep network
     output_dict_deep = deep_network.train(
@@ -212,7 +219,7 @@ if __name__ == "__main__":
     # Initialize a wide network: [10, 100, 1] means an input layer of size 10,
     # a hidden layer of size 100, and an output layer of size 1
     wide_network = DeepNetRunner(name="WideNetwork", layer_sizes=[
-                                 1000, 10000, 1000, 2], net_type=2)
+                                 input_size, 10000, 1000, out_put_size], net_type=2)
 
     # Train the wide network
     output_dict_wide = wide_network.train(

@@ -38,11 +38,15 @@ class ThoughtDiversity:
         Returns:
         List[Any]: The results of the Monte Carlo simulation.
         """
-        res = [self.pack.one_question(
-            question)
-            for _ in range(rounds)]
+        res = []
+
+        for _ in range(rounds):
+            round_res = self.pack.one_question(question)
+            if round_res:
+                res.append(str(round_res))
         logging.info(res)
         # Join all strings into a single string, separating them by space
+
         joined_strings = ' '.join(res)
         # print('getting metrics H & D')
         # Split the single string into words
