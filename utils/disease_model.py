@@ -82,13 +82,13 @@ RSV,Unknown,Varies,Unknown
 if __name__ == "__main__":
 
     # Transmission Rate
-    beta = 0.1
+    beta = 1
     # Recovery Rate
     gamma = 1/5
     # Immunity Loss Rate
     xi = 0.05
     N = 1200
-    I0 = 20
+    I0 = 5
 
     model = SIRSModel(beta, gamma, xi, N, I0)
     history = model.simulate(100)

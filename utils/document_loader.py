@@ -15,7 +15,7 @@ openai.api_key = os.environ['OPENAI_API_KEY']
 class NewCourse:
     """Manages the creation and handling of courses."""
 
-    def __init__(self, name: str, path: str):
+    def __init__(self, name: str, path: str, embedding_params: list):
         """
         Initializes the NewCourse object.
 
@@ -31,6 +31,7 @@ class NewCourse:
         self.vectordb = None
         self.k_results = None
         self.embedding_function = None
+        self.embedding_params = embedding_params
 
     def from_pdf(self, knowledge_document_path):
         """

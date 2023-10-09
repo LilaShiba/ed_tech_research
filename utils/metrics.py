@@ -2,6 +2,7 @@ from typing import List, Any
 import numpy as np
 from collections import Counter
 import logging
+from scipy.stats import wasserstein_distance
 
 
 class ThoughtDiversity:
@@ -25,6 +26,8 @@ class ThoughtDiversity:
         self.current_mcs_samples = []
         self.shannon_entropy_scores = []
         self.true_diversity_scores = []
+        self.wasserstein_metrics = []
+        self.ginis = []
 
     def monte_carlo_sim(self, question="", rounds: int = 5) -> List[Any]:
         """
@@ -42,12 +45,58 @@ class ThoughtDiversity:
 
         for _ in range(rounds):
             round_res = self.pack.one_question(question)
-            if round_res:
-                res.append(str(round_res))
-        logging.info(res)
-        # Join all strings into a single string, separating them by space
+            acot = round_res[self.pack.agent_names[0]]
+            acor = round_res[self.pack.agent_names[1]]
+            acor2 = round_res[self.pack.agent_names[2]]
 
-        joined_strings = ' '.join(res)
+            if round_res:
+                res.append(str((acot, acor, acor2)))
+                a_cot_vector = self.prob_vectors(acot)
+                a_cor_vector = self.prob_vectors(acor)
+                a_cor2_vector = self.prob_vectors(acor2)
+
+                self.shannon_entropy_scores.append(
+                    ('cot', self.shannon_entropy(a_cot_vector))
+                )
+
+                self.true_diversity_scores.append(
+                    ('cot', self.true_diversity(a_cot_vector))
+                )
+
+                self.shannon_entropy_scores.append(
+                    ('cot', self.shannon_entropy(a_cor2_vector))
+                )
+
+                self.true_diversity_scores.append(
+                    ('cot', self.true_diversity(a_cor2_vector))
+                )
+
+                self.shannon_entropy_scores.append(
+                    ('cor', self.shannon_entropy(a_cor_vector))
+                )
+
+                self.true_diversity_scores.append(
+                    ('cor', self.true_diversity(a_cor_vector))
+                )
+
+                self.wasserstein_metrics.append((1, self.wasserstein(
+                    a_cot_vector,  a_cor_vector)))
+                self.wasserstein_metrics.append((2, self.wasserstein(
+                    a_cot_vector,  a_cor2_vector)))
+                self.wasserstein_metrics.append((3, self.wasserstein(
+                    a_cor_vector,  a_cor2_vector)))
+
+        res = [self.shannon_entropy_scores,
+               self.true_diversity_scores, self.wasserstein_metrics]
+        logging.info(res)
+        return res
+
+    def prob_vectors(self, vector: List[str]) -> List[int]:
+        '''
+        return prob_vector
+        '''
+
+        joined_strings = ' '.join(vector)
         # print('getting metrics H & D')
         # Split the single string into words
         words = joined_strings.split()
@@ -55,9 +104,9 @@ class ThoughtDiversity:
         word_counts = Counter(words)
 
         counts = list(word_counts.values())
-        self.shannon_entropy_scores.append(self.shannon_entropy(counts))
-        self.true_diversity_scores.append(self.true_diversity(counts))
-        return self.shannon_entropy_scores, self.true_diversity_scores, res
+        m = sum(counts)/len(counts)
+        prob_vector = [count/m for count in counts]
+        return prob_vector
 
     def shannon_entropy(self, counts: List[int]) -> float:
         """
@@ -108,7 +157,15 @@ class ThoughtDiversity:
         monte_Carlo_Simulation: Bool Default: False
         '''
 
+    def wasserstein(self, p1: List[int], p2: List[int]) -> float:
+        '''
+        returns the Wasserstein Metric between two numpy probaitly vectors 
 
+        '''
+        # Compute the 1st Wasserstein distance between the two distributions
+        w_dist = wasserstein_distance(p1, p2)
+        self.wasserstein_metrics.append(w_dist)
+        print(f"Wasserstein Distance: {w_dist}")
 # Example Usage:
 # Assuming Agent_Pack is defined and has the necessary attributes
 # agent_pack_instance = Agent_Pack()

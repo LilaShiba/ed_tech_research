@@ -26,7 +26,8 @@ class Encoder:
         Parameters:
             - course_instance: Instance of NewCourse.
         """
-        self.chunk_size = 200
+        self.chunk_size = course_instance.embedding_params[1]
+        self.overlap = course_instance.embedding_params[2]
         self.course_instance = course_instance
         self.links = course_instance.links
         self.docs = course_instance.docs
@@ -37,8 +38,9 @@ class Encoder:
         self.name = course_instance.name
         self.data_base = None
         self.path_to_db = None
+        self.embedding_parmas = self.course_instance.embedding_params
 
-        self.model = "facebook-dpr-ctx_encoder-multiset-base"
+        self.model = self.embedding_parmas[0]
 
         self.embedding_function = SentenceTransformerEmbeddings(
             model_name=self.model)
@@ -47,9 +49,14 @@ class Encoder:
         """
         Creates new chunks from documents
         """
-        text_splitter = TokenTextSplitter(
-            chunk_size=chunk, chunk_overlap=overlap)
-        self.chunks = text_splitter.split_documents(docs)
+        if not self.chunk_size:
+            text_splitter = TokenTextSplitter(
+                chunk_size=chunk, chunk_overlap=overlap)
+        else:
+            text_splitter = TokenTextSplitter(
+                chunk_size=self.chunk_size, chunk_overlap=self.overlap)
+            self.chunks = text_splitter.split_documents(docs)
+
         self.course_instance.docs = docs
         self.chunk_size = chunk
         return self.chunks
@@ -126,7 +133,7 @@ class Encoder:
         self.course_instance.vectordb = self.vectordb
         self.path_to_db = path
 
-    def encoded_query(self, q_a, k_docs=15):
+    def encoded_query(self, q_a, k_docs=5):
         """
        Encodes query then searches
 

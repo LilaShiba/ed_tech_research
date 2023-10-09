@@ -33,7 +33,7 @@ class DeepNetRunner:
         types = {
             1: 'cot',
             2: 'matrix',
-            3: 'rules',
+            3: 'corpus',
             4: 'snd'
         }
         return types.get(net_type, 'unknown')
@@ -169,8 +169,6 @@ class DeepNetRunner:
                 "biases": [b.copy() for b in self.biases]
             }
 
-            print(f"Epoch {epoch+1}/{epochs}, Loss: {loss}")
-
         return output_dict
 
     def plot_training_output(self, output_dict: Dict[int, Dict[str, np.ndarray]]) -> None:
@@ -207,7 +205,7 @@ if __name__ == "__main__":
     # Initialize a deep network: [10, 5, 5, 1] means an input layer of size 10,
     # two hidden layers of size 5, and an output layer of size 1
     deep_network = DeepNetRunner(name="DeepNetwork", layer_sizes=[
-                                 input_size, 5,5,5,5,5,5, out_put_size], net_type=3)
+                                 input_size, 5, 5, 5, 5, 5, 5, 5, 5, out_put_size], net_type=3)
 
     # Train the deep network
     output_dict_deep = deep_network.train(
@@ -219,7 +217,7 @@ if __name__ == "__main__":
     # Initialize a wide network: [10, 100, 1] means an input layer of size 10,
     # a hidden layer of size 100, and an output layer of size 1
     wide_network = DeepNetRunner(name="WideNetwork", layer_sizes=[
-                                 input_size, 10000, 1000, out_put_size], net_type=2)
+                                 input_size, 10000, 10000, out_put_size], net_type=2)
 
     # Train the wide network
     output_dict_wide = wide_network.train(
@@ -227,3 +225,15 @@ if __name__ == "__main__":
 
     # Plot the training loss for the wide network
     wide_network.plot_training_output(output_dict_wide)
+
+    # Deep wide
+
+    deep_wide_network = DeepNetRunner(name="DeepWideNetwork", layer_sizes=[
+        input_size, 10000, 10000, 10000, 10000, 10000, 10000, 10000, out_put_size], net_type=2)
+
+    # Train the wide network
+    output_dict_wide = deep_wide_network.train(
+        X_train, y_train, epochs=12, learning_rate=0.01)
+
+    # Plot the training loss for the wide network
+    deep_wide_network.plot_training_output(output_dict_wide)

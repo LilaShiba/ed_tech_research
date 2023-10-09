@@ -20,19 +20,20 @@ class ChatBot:
     def __init__(self, agent_instance):
         """ Chat with resources """
         self.agent = agent_instance
+        self.embedding_params = agent_instance.embedding_params
         self.name = 'test'
         self.current_question = None
         self.qa_chain = None
         self.retriever = None
         self.question = None
 
-        self.model = "facebook-dpr-ctx_encoder-multiset-base"
+        self.model = self.embedding_params[0]
 
         self.embedding_function = SentenceTransformerEmbeddings(
             model_name=self.model)
 
         self.llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo", temperature=0.9)
+            model_name="gpt-3.5-turbo", temperature=self.embedding_params[3])
 
     def load_chat(self):
         """

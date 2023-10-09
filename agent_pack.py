@@ -10,19 +10,29 @@ class Pack:
     three agent instances are composed as one
     '''
 
-    def __init__(self, corpus_path_array: list, main_document_path: str, agent_paths: list) -> None:
+    def __init__(self, corpus_path_array: list, main_document_path: str, agent_paths: list, embedding_params: dict = None) -> None:
         '''
         Create Pack
         '''
+
+        if not embedding_params:
+            embedding_params = {
+                1: ["facebook-dpr-ctx_encoder-multiset-base", 200, 25, 0.9],
+                2: ["facebook-dpr-ctx_encoder-multiset-base", 150, 20, 0.7],
+                3: ["facebook-dpr-ctx_encoder-multiset-base", 100, 15, 0.5]
+            }
+        self.agent_names = ["agent_corpus_cot_1",
+                            "agent_corpus_cot_2", "agent_corpus_cot_3"]
         self.current_res = None
         self.current_jaccard_indices = None
         self.agent_cot: Agent = Agent(
-            "agent_cot", main_document_path, True, 1)
+            self.agent_names[0], main_document_path, True, 1, embedding_params[1])
         self.agent_quant: Agent = Agent(
-            "agent_quant", main_document_path, False, 2)
+            self.agent_names[1], main_document_path, True, 2, embedding_params[2])
         self.agent_corpus: Agent = Agent(
-            "agent_corpus", corpus_path_array, False, 3)
+            self.agent_names[2], corpus_path_array, True, 3, embedding_params[3])
         self.agent_corpus.path = main_document_path
+        self.embeddings = embedding_params
 
         # Combine paths with agents
         self.agents = zip([self.agent_cot, self.agent_quant,
@@ -80,8 +90,10 @@ class Pack:
         one question for pack
         '''
         res = {
-            "agent_cot": self.agent_cot.chat_bot.one_question(prompt),
-            "agent_corpus": self.agent_quant.chat_bot.one_question(prompt)
+            self.agent_cot.name: self.agent_cot.chat_bot.one_question(prompt),
+            self.agent_quant.name: self.agent_quant.chat_bot.one_question(prompt),
+            self.agent_corpus.name: self.agent_corpus.chat_bot.one_question(
+                prompt)
         }
         return res
 
@@ -147,17 +159,24 @@ class Pack:
 
 
 if __name__ == '__main__':
-    main_doc_path = "documents/meowsmeowing.pdf"
-    corpus_path = ['documents/ASD.pdf', 'documents/HilbertSpaceMulti.pdf',
-                   'documents/LearnabilityandComplexityofQuantumSamples.pdf', 'documents/meowsmeowing.pdf'
+
+    main_doc_path = "documents/kbai_book.pdf"
+    corpus_path = ['documents/SND.pdf', 'documents/cot.pdf',
+                   'documents/LtoA.pdf', 'documents/wider_deeper.pdf'
                    ]
 
-    agent_db_paths = ['chroma_db/agent_cot',
-                      'chroma_db/agent_quant', 'chroma_db/agent_corpus']
+    # agent_db_paths = ['chroma_db/agent_cot',
+    #                   'chroma_db/agent_quant', 'chroma_db/agent_corpus']
 
-    # agent_db_paths = [0, 0, 0]
+    agent_db_paths = [0, 0, 0]
+    embedding_params = {
+        1: ["facebook-dpr-ctx_encoder-multiset-base", 200, 25, 0.9],
+        2: ["facebook-dpr-ctx_encoder-multiset-base", 150, 20, 0.7],
+        3: ["facebook-dpr-ctx_encoder-multiset-base", 100, 15, 0.5]
+    }
 
-    test_agent = Pack(corpus_path, main_doc_path, agent_db_paths)
+    test_agent = Pack(corpus_path, main_doc_path,
+                      agent_db_paths, embedding_params)
     test_agent.add_docs(['documents/SND.pdf'])
     # test_agent.chat()
     metrics = ThoughtDiversity(test_agent)

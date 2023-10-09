@@ -10,10 +10,10 @@ from utils.dual_encoder import Encoder
 
 class Agent:
     """Top level for AI Agent. Composed of
-       Encoder instance & NewCourse instance 
+       Encoder, DB, & NewCourse instance 
     """
 
-    def __init__(self, name: str, path: str, cot: bool, cot_type: int):
+    def __init__(self, name: str, path: str, cot: bool, cot_type: int, embedding_params: list):
         """
         Initializes the Agent with a name and path.
 
@@ -31,9 +31,10 @@ class Agent:
         self.agent_instance = None
         self.current_docs = None
         self.docs = None
+        self.embedding_params = embedding_params
         # Subprocesses
         print('creating course for ' + self.name)
-        self.course = NewCourse(name, path)
+        self.course = NewCourse(name, path, embedding_params)
         print('creating encoder for ' + self.name)
         self.encoder = Encoder(self.course)
         print('creating chat_bot for ' + self.name)
@@ -127,7 +128,7 @@ if __name__ == "__main__":
     # Enable Chains of Thought
     # Memory & COT example
     testAgent = Agent(
-        "agent_snd", "chroma_db/agent_snd", True, 1)
+        "agent_snd", "chroma_db/agent_snd", True, 1, embedding_params=["facebook-dpr-ctx_encoder-multiset-base", 200, 25, 0.7])
     testAgent.cot = True
     testAgent.load_course()
     # testAgent.add_memory("documents/HilbertSpaceMulti.pdf", path_to_db)
