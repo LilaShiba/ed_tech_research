@@ -826,3 +826,55 @@ INFO:root:Wide neural nets can increase diversity when combined with SND (Stocha
 
 In summary, wide neural nets can increase diversity in conjunction with SND by training a wide network, extracting multiple teacher models, distilling their knowledge into a narrower student model, and combining predictions from both the student and teacher models.
 INFO:root:I'm sorry, but I don't have enough context to understand what you mean by "wide neural nets" and "SND". Could you please provide more information or clarify your question?
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:sentence_transformers.SentenceTransformer:Load pretrained SentenceTransformer: facebook-dpr-ctx_encoder-multiset-base
+INFO:sentence_transformers.SentenceTransformer:Use pytorch device: cpu
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.posthog:Anonymized telemetry enabled. See https://docs.trychroma.com/telemetry for more information.
+INFO:root:Wide neural networks (NNs) can increase diversity with SND (Stochastic Neural Discriminators) by following a step-by-step approach:
+
+1. Initialization: Initialize the wide neural network with random weights and biases. The network should have a larger number of neurons than a typical narrow network.
+
+2. Training data: Prepare a diverse training dataset that covers a wide range of inputs and outputs. This dataset should contain examples representing various classes or categories.
+
+3. Forward pass: Perform a forward pass through the network using a particular input from the training dataset. The input propagates through the network layers, and the output is generated.
+
+4. Stochastic Neural Discriminators (SND): Apply the concept of SND to introduce diversity. SND involves the random sampling of a subset of neurons from a larger pool of neurons in the network. This sampling can be done at each layer or selectively at specific layers.
+
+5. Activation selection: Randomly select which neurons among the sampled subset will be activated for a particular forward pass. This random activation introduces stochasticity and diversity into the network's decision-making process.
+
+6. Backpropagation: Compute the error or loss between the network's output and the desired output using a suitable loss function. Then, perform backpropagation to update the weights and biases of the network using gradient descent or a similar optimization algorithm.
+
+7. Repeat: Repeat steps 3 to 6 for multiple iterations or epochs until the network converges or achieves the desired level of performance on the training dataset.
+
+By employing this step-by-step approach, wide neural networks with SND can increase diversity by introducing randomness and variability into the network's computations. This, in turn, allows the network to explore different decision boundaries and potentially discover more diverse and nuanced patterns in the training data.
+INFO:root:I'm sorry, but I don't have enough context to understand what "SND" refers to in this context. Could you please provide more information or clarify your question?
+INFO:root:I'm sorry, but I'm not familiar with the specific term "SND" in the context of neural networks. Could you please provide more information or clarify what SND stands for?
+INFO:root:Wide neural nets can increase diversity with SND (Stochastic Neural Discriminative) training by following these steps:
+
+1. SND training: SND is a training algorithm that focuses on increasing diversity in the neural networks. It introduces a stochastic component during training to encourage exploration of different solutions.
+
+2. Initialization: Initialize a wide neural network with a larger number of neurons or hidden units compared to a traditional neural network. This increased width allows for more diverse representations of data.
+
+3. Stochastic activation: During training, apply stochastic activation functions such as Gaussian dropout or dropout. These functions randomly drop or disable a certain percentage of neurons during each training iteration. This randomness encourages the network to explore different pathways and prevents overfitting.
+
+4. Model diversity: The wider network with stochastic activation increases the chances of having different paths for information flow. This diversifies the representations and features learned by the network.
+
+5. Ensemble methods: Employ ensemble methods to further enhance diversity. By training multiple instances of the wide neural network with different initializations or random seeds, you can create an ensemble of diverse models. Each model in the ensemble contributes to the overall diversity of predictions.
+
+6. Aggregation: Combine the predictions of the ensemble models using techniques like averaging or voting. Aggregating the results of diverse models helps in reducing bias and improves the overall accuracy and robustness of the predictions.
+
+By systematically incorporating wide neural networks, stochastic activations, ensemble methods, and aggregation techniques, SND training can effectively increase diversity and improve the performance of neural networks.
+INFO:root:I'm sorry, but I'm not familiar with the term SND in the context of neural networks. Could you please provide more information or clarify your question?
+INFO:root:I'm sorry, but I'm not familiar with the term "SND" in the context of neural networks. Can you please provide more information or clarify what SND stands for?
+INFO:root:[[('cot', 3.100008708912296), ('cot', 3.1466934307188565), ('cor', 3.1015530200714014), ('cot', 3.0401205786367576), ('cot', 3.1273536917159657), ('cor', 3.0766443516748394)], [('cot', 22.198144602294295), ('cot', 23.259029697434038), ('cor', 22.232451928490114), ('cot', 20.907764112802074), ('cot', 22.813527962924912), ('cor', 21.685511216618938)], [0.3378760555317018, (1, None), 0.4462407464927266, (2, None), 0.14291212737512798, (3, None), 0.3691107052683053, (1, None), 0.4170705985932526, (2, None), 0.12249804652281059, (3, None)]]
