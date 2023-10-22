@@ -18,6 +18,10 @@ Welcome to the Ed Tech Research AI Agent repository! Dive into the universe of e
 
 - **Dual Encoder Module**: Handles the encoding of documents for a given course.
 - **NewCourse**: Manages the creation and handling of courses.
+- **Chat Bot**: Manages chat with LLM
+- **Agent**: A single NLP Agent cabable of Corpus, COT, or both
+- **Agent Pack**: Several Agents as one!
+- **Metrics**: Measure diversity in an agent or pack
 
 ## 🧙‍♀️ Magic Behind the Scenes 🌟
 
